@@ -15,7 +15,8 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
     "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open"
+    "test:e2e:open": "cypress open",
+    "clean": "chmod +x reset.sh && ./reset.sh"
   },
   "dependencies": {
     "react": "^19.1.0",
