@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router';
 import { AuthGuard, NotFound, FullscreenLoader } from '@/components/layout';
 import ROUTES from '@/constants/routes';
+import { ThemeToggle } from './components/theme';
 
 // Lazy load pages
 const AuthPage = lazy(() => import('./pages/auth/auth'));
@@ -10,6 +11,7 @@ const DashboardPage = lazy(() => import('./pages/dashboard/dashboard'));
 function App() {
   return (
     <Suspense fallback={<FullscreenLoader />}>
+      <ThemeToggle />
       <Routes>
         {/* Public route */}
         <Route path={ROUTES.AUTH} element={<AuthPage />} />
