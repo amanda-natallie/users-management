@@ -24,12 +24,22 @@ export default {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/utils/env.ts',
+    '!src/utils/tailwind.ts',
+    '!src/**/index.ts',
     '!src/**/*.d.ts',
     '!src/main.tsx',
     '!src/vite-env.d.ts',
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 };
