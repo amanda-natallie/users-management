@@ -1,0 +1,3 @@
+#!/bin/sh
+
+pnpm lint && pnpm pretty-quick --staged
