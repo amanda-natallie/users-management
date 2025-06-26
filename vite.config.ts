@@ -5,11 +5,7 @@ import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    EnvironmentPlugin('all'), // This transforms import.meta.env to process.env
-    tailwindcss(),
-  ],
+  plugins: [react(), EnvironmentPlugin('all'), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
