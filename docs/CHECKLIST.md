@@ -37,10 +37,10 @@
 
 ## 📦 Project Tools
 
-- [ ] Setup tailwind
-- [ ] Setup shadcn
+- [x] Setup tailwind
+- [x] Setup shadcn
 - [ ] Setup zustand
-- [ ] Setup react router
+- [ ] Setup react router v6
 - [ ] Setup tanstack query
 - [ ] Setup react hook form
 
