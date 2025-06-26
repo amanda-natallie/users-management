@@ -28,6 +28,170 @@ pnpm install
 pnpm dev
 ```
 
+## 🐳 Docker Setup
+
+This project is configured to run with Docker and Colima. The setup includes multi-stage builds for both development and production environments.
+
+### Prerequisites
+
+- Docker
+- Colima (for macOS users)
+- Make (optional, for using Makefile commands)
+
+### Quick Start with Docker
+
+#### Using Makefile (Recommended)
+
+```bash
+# Start Colima (if not running)
+make colima-start
+
+# Start development environment
+make dev
+
+# Start production environment
+make prod
+
+# Build images
+make build
+
+# Clean up
+make clean
+```
+
+#### Using Docker Compose directly
+
+```bash
+# Development
+docker-compose up app-dev
+
+# Production
+docker-compose -f docker-compose.prod.yml up
+
+# Build and start
+docker-compose up --build app-dev
+```
+
+### Docker Commands
+
+#### Development
+
+```bash
+# Start development server with hot reload
+docker-compose up app-dev
+
+# Start in background
+docker-compose up -d app-dev
+
+# Access shell in container
+docker-compose exec app-dev sh
+
+# View logs
+docker-compose logs -f app-dev
+```
+
+#### Production
+
+```bash
+# Start production server
+docker-compose -f docker-compose.prod.yml up
+
+# Start in background
+docker-compose -f docker-compose.prod.yml up -d
+
+# View logs
+docker-compose -f docker-compose.prod.yml logs -f
+```
+
+#### Building Images
+
+```bash
+# Build all images
+docker-compose build
+
+# Build specific target
+docker build --target dev -t user-backoffice:dev .
+docker build --target production -t user-backoffice:prod .
+```
+
+### Environment Variables
+
+The application supports the following environment variables:
+
+#### Required Variables
+- `VITE_API_URL`: ReqRes API base URL (default: `https://reqres.in/api`)
+- `VITE_API_KEY`: ReqRes API key for authentication
+
+#### Optional Variables
+- `NODE_ENV`: Set to `development` or `production`
+- `VITE_APP_NAME`: Application name (default: `User Backoffice`)
+- `VITE_APP_VERSION`: Application version (default: `1.0.0`)
+- `VITE_ENABLE_DEBUG`: Enable debug mode (default: `true` in dev, `false` in prod)
+- `VITE_ENABLE_ANALYTICS`: Enable analytics (default: `false` in dev, `true` in prod)
+
+#### Environment Files
+- `.env.example`: Template with all available variables (safe to commit)
+- `.env.development`: Development environment configuration (NOT committed)
+- `.env.production`: Production environment configuration (NOT committed)
+
+#### Local Development Setup
+```bash
+# Setup environment files (creates .env.development and .env.production)
+make env-setup
+
+# Or manually:
+cp .env.example .env.development
+cp .env.example .env.production
+
+# Edit with your actual values
+# VITE_API_KEY=your-actual-reqres-api-key
+```
+
+#### Security Notes
+- ⚠️ **Never commit `.env.development` or `.env.production` to git**
+- ✅ `.env.example` is safe to commit (contains no real secrets)
+- 🔒 Docker will use the `.env` files from your local machine
+- 🚀 For production deployment, use your CI/CD secrets management
+
+#### Docker Environment
+The Docker setup automatically uses the appropriate environment files:
+- Development: Uses `.env.development`
+- Production: Uses `.env.production`
+
+### Health Checks
+
+- Development: `http://localhost:5173`
+- Production: `http://localhost:8080/health`
+
+### Colima Integration
+
+Since you're using Colima, here are some useful commands:
+
+```bash
+# Check Colima status
+make colima-status
+
+# Start Colima
+make colima-start
+
+# Stop Colima
+make colima-stop
+```
+
+### Testing with Docker
+
+```bash
+# Run unit tests
+make test
+
+# Run e2e tests
+make test-e2e
+
+# Or directly with docker-compose
+docker-compose exec app-dev pnpm test
+docker-compose exec app-dev pnpm test:e2e
+```
+
 ## 🧪 Testing
 
 ### Unit Tests (Jest + RTL)

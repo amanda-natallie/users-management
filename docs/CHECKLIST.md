@@ -8,6 +8,31 @@
 - [x] Setup jest + RTL
 - [x] Setup cypress
 
+## 🐳 Docker Setup
+
+- [x] Create Dockerfile for development
+- [x] Create Dockerfile for production
+- [x] Create docker-compose.yml for development
+- [x] Create docker-compose.yml for production
+- [x] Setup multi-stage builds
+- [x] Configure environment variables
+- [x] Setup health checks
+- [x] Create .dockerignore file
+- [x] Document Docker usage in README
+
+## 🔧 Environment Setup
+
+- [x] Create environment files (.env.example, .env.development, .env.production)
+- [x] Configure ReqRes API variables (VITE_API_URL, VITE_API_KEY)
+- [x] Setup TypeScript types for environment variables
+- [x] Create environment utility functions
+- [x] Update Docker configuration for environment files
+- [x] Add environment setup commands to Makefile
+- [x] Document environment configuration in README
+- [x] Remove hardcoded secrets from docker-compose files
+- [x] Configure .gitignore to exclude .env files
+- [x] Setup secure environment variable handling
+
 ## 📦 Project Tools
 
 - [ ] Setup tailwind
