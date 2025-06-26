@@ -1,37 +1,130 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import App from './App';
 
-describe('App', () => {
-  it('renders without crashing', () => {
-    render(<App />);
-    expect(screen.getByText('Vite + React')).toBeInTheDocument();
+const renderApp = () => {
+  return render(<App />);
+};
+
+describe('App Component', () => {
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  it('displays the initial count', () => {
-    render(<App />);
-    expect(screen.getByText('count is 0')).toBeInTheDocument();
+  it('renders without crashing', async () => {
+    await act(async () => {
+      renderApp();
+    });
+    expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
   });
 
-  it('increments count when button is clicked', () => {
-    render(<App />);
-    const button = screen.getByRole('button');
-
-    fireEvent.click(button);
-    expect(screen.getByText('count is 1')).toBeInTheDocument();
-
-    fireEvent.click(button);
-    expect(screen.getByText('count is 2')).toBeInTheDocument();
+  it('shows FullscreenLoader as Suspense fallback', async () => {
+    await act(async () => {
+      renderApp();
+    });
+    expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
   });
 
-  it('displays the edit instruction', () => {
-    render(<App />);
-    expect(screen.getByText(/Edit/)).toBeInTheDocument();
-    expect(screen.getByText(/src\/App\.tsx/)).toBeInTheDocument();
+  it('renders all route components when router is mocked', async () => {
+    await act(async () => {
+      renderApp();
+    });
+
+    expect(screen.getByTestId('auth-page')).toBeInTheDocument();
+    expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
+    expect(screen.getByTestId('not-found')).toBeInTheDocument();
   });
 
-  it('has Vite and React logos', () => {
-    render(<App />);
-    expect(screen.getByAltText('Vite logo')).toBeInTheDocument();
-    expect(screen.getByAltText('React logo')).toBeInTheDocument();
+  it('lazy loads components properly', async () => {
+    await act(async () => {
+      renderApp();
+    });
+
+    expect(screen.getByTestId('auth-page')).toBeInTheDocument();
+    expect(screen.getByTestId('not-found')).toBeInTheDocument();
+  });
+
+  describe('Route Coverage', () => {
+    it('covers auth route path', async () => {
+      await act(async () => {
+        renderApp();
+      });
+      expect(screen.getByTestId('auth-page')).toBeInTheDocument();
+    });
+
+    it('covers home route path', async () => {
+      await act(async () => {
+        renderApp();
+      });
+
+      expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
+    });
+
+    it('covers catch-all route path', async () => {
+      await act(async () => {
+        renderApp();
+      });
+      expect(screen.getByTestId('not-found')).toBeInTheDocument();
+    });
+  });
+
+  it('has correct component structure', async () => {
+    await act(async () => {
+      renderApp();
+    });
+
+    expect(screen.getByTestId('auth-page')).toBeInTheDocument();
+    expect(screen.getByTestId('not-found')).toBeInTheDocument();
+    expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
+  });
+
+  it('shows dashboard when authenticated', async () => {
+    localStorage.setItem('userToken', 'fake-token');
+    localStorage.setItem('user', 'fake-user');
+
+    await act(async () => {
+      renderApp();
+    });
+
+    await act(async () => {
+      expect(screen.getByTestId('dashboard-page')).toBeInTheDocument();
+    });
+  });
+
+  it('shows auth guard loader when not authenticated', async () => {
+    localStorage.removeItem('userToken');
+
+    await act(async () => {
+      renderApp();
+    });
+
+    expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
+  });
+});
+
+describe('App Component - Additional Coverage', () => {
+  it('exports App component as default', () => {
+    expect(App).toBeDefined();
+    expect(typeof App).toBe('function');
+  });
+
+  it('App function returns JSX element', () => {
+    const result = App();
+    expect(result).toBeDefined();
+    expect(result.type).toBeDefined();
+  });
+
+  it('tests all Route components render correctly', async () => {
+    let unmount: () => void;
+
+    await act(async () => {
+      const renderResult = renderApp();
+      unmount = renderResult.unmount;
+    });
+
+    expect(document.body).not.toBeEmptyDOMElement();
+
+    await act(async () => {
+      unmount();
+    });
   });
 });

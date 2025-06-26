@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { env } from './__mocks__/env';
+import React from 'react';
 
 // Mock do ResizeObserver que não está disponível no jsdom
 Object.defineProperty(window, 'ResizeObserver', {
@@ -53,4 +54,16 @@ jest.mock('@/utils/env', () => ({
   logEnvConfig: jest.fn(),
   validateEnv: jest.fn(),
   env,
+}));
+
+// Mock do react-router para evitar dependências de TextEncoder e hooks
+jest.mock('react-router', () => ({
+  Routes: ({ children }: { children: React.ReactNode }) =>
+    React.createElement('div', { 'data-testid': 'routes' }, children),
+  Route: ({ element }: { element: React.ReactNode }) =>
+    React.createElement('div', { 'data-testid': 'route' }, element),
+  useNavigate: () => jest.fn(),
+  useLocation: () => ({ pathname: '/' }),
+  useParams: () => ({}),
+  useMatch: () => ({}),
 }));

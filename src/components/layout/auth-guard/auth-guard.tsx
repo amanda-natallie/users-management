@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import FullscreenLoader from '../fullscreen-loader';
-import { ROUTES } from '@/constants/routes';
+import ROUTES from '@/constants/routes';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     return <FullscreenLoader message="Checking authentication..." />;
   }
 
-  return <>{children}</>;
+  return <div data-testid="auth-guard">{children}</div>;
 };
 
 export default AuthGuard;

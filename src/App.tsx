@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router';
 import { AuthGuard, NotFound, FullscreenLoader } from '@/components/layout';
-import { ROUTES } from '@/constants/routes';
+import ROUTES from '@/constants/routes';
 
 // Lazy load pages
 const AuthPage = lazy(() => import('./pages/auth/auth'));
