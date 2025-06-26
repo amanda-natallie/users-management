@@ -90,6 +90,9 @@ importers:
       vite:
         specifier: ^7.0.0
         version: 7.0.0(@types/node@24.0.4)(jiti@2.4.2)
+      vite-plugin-environment:
+        specifier: ^1.1.3
+        version: 1.1.3(vite@7.0.0(@types/node@24.0.4)(jiti@2.4.2))
 
 packages:
 
@@ -3091,6 +3094,11 @@ packages:
   verror@1.10.0:
     resolution: {integrity: sha512-ZZKSmDAEFOijERBLkmYfJ+vmk3w+7hOLYDNkRCuRuMJGEmqYNCNLyBBFwWKVMhfwaEF3WOd0Zlw86U/WC/+nYw==}
     engines: {'0': node >=0.6.0}
+
+  vite-plugin-environment@1.1.3:
+    resolution: {integrity: sha512-9LBhB0lx+2lXVBEWxFZC+WO7PKEyE/ykJ7EPWCq95NEcCpblxamTbs5Dm3DLBGzwODpJMEnzQywJU8fw6XGGGA==}
+    peerDependencies:
+      vite: '>= 2.7'
 
   vite@7.0.0:
     resolution: {integrity: sha512-ixXJB1YRgDIw2OszKQS9WxGHKwLdCsbQNkpJN171udl6szi/rIySHL6/Os3s2+oE4P/FLD4dxg4mD7Wust+u5g==}
@@ -6530,6 +6538,10 @@ snapshots:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
       extsprintf: 1.3.0
+
+  vite-plugin-environment@1.1.3(vite@7.0.0(@types/node@24.0.4)(jiti@2.4.2)):
+    dependencies:
+      vite: 7.0.0(@types/node@24.0.4)(jiti@2.4.2)
 
   vite@7.0.0(@types/node@24.0.4)(jiti@2.4.2):
     dependencies:

@@ -13,4 +13,10 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
+  component: {
+    devServer: {
+      framework: 'react',
+      bundler: 'vite',
+    },
+  },
 });

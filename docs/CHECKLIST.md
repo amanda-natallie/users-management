@@ -32,6 +32,8 @@
 - [x] Remove hardcoded secrets from docker-compose files
 - [x] Configure .gitignore to exclude .env files
 - [x] Setup secure environment variable handling
+- [x] Setup environment variable handlers for Jest
+- [x] Setup dynamic import aliases
 
 ## 📦 Project Tools
 

@@ -5,7 +5,7 @@
 
 export const env = {
   // API Configuration
-  API_URL: import.meta.env.VITE_API_URL || 'https://reqres.in/api',
+  API_URL: import.meta.env.VITE_API_URL || '',
   API_KEY: import.meta.env.VITE_API_KEY || '',
 
   // App Configuration

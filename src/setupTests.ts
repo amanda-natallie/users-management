@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { env } from './__mocks__/env';
 
 // Mock do ResizeObserver que não está disponível no jsdom
 Object.defineProperty(window, 'ResizeObserver', {
@@ -40,3 +41,16 @@ Object.defineProperty(window, 'scrollTo', {
   writable: true,
   value: jest.fn(),
 });
+
+jest.mock('@/utils/env', () => ({
+  getApiConfig: jest.fn().mockReturnValue({
+    baseURL: env.API_URL,
+    headers: {
+      'x-api-key': env.API_KEY,
+      'Content-Type': 'application/json',
+    },
+  }),
+  logEnvConfig: jest.fn(),
+  validateEnv: jest.fn(),
+  env,
+}));

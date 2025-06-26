@@ -23,6 +23,7 @@ export default {
   ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
+    '!src/utils/env.ts',
     '!src/**/*.d.ts',
     '!src/main.tsx',
     '!src/vite-env.d.ts',
