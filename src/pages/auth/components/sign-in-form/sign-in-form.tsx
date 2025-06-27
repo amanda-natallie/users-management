@@ -1,11 +1,10 @@
-'use client';
-
+import { ControlledFormField, FormWrapper } from '@/components/forms';
+import { AuthLayout } from '@/components/layout';
+import { useLogin } from '@/hooks';
+import { signInSchema, type SignInFormData } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signInSchema, type SignInFormData } from '@/schemas';
-import { AuthLayout } from '@/components/layout';
-import { FormWrapper, ControlledFormField } from '@/components/forms';
 
 interface SignInFormProps {
   onSwitchToSignUp: () => void;
@@ -14,6 +13,7 @@ interface SignInFormProps {
 
 const SignInForm = ({ onSwitchToSignUp, isFlipping = false }: SignInFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const loginMutation = useLogin();
 
   const {
     control,
@@ -28,8 +28,13 @@ const SignInForm = ({ onSwitchToSignUp, isFlipping = false }: SignInFormProps) =
     },
   });
 
-  const onSubmit = (data: SignInFormData) => {
-    console.log('Sign in form is valid and ready to submit:', data);
+  const onSubmit = async (data: SignInFormData) => {
+    console.log('LOG:: onSubmit called', data);
+    try {
+      await loginMutation.mutateAsync(data);
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (
@@ -41,7 +46,13 @@ const SignInForm = ({ onSwitchToSignUp, isFlipping = false }: SignInFormProps) =
       onSwitch={onSwitchToSignUp}
       isFlipping={isFlipping}
     >
-      <FormWrapper onSubmit={handleSubmit(onSubmit)} submitText="Sign In" isValid={isValid}>
+      <FormWrapper
+        onSubmit={handleSubmit(onSubmit)}
+        submitText="Sign In"
+        isValid={isValid}
+        loading={loginMutation.isPending}
+        loadingText="Signing in..."
+      >
         <ControlledFormField
           name="email"
           control={control}

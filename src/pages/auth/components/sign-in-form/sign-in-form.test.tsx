@@ -1,8 +1,13 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import SignInForm from './sign-in-form';
-import { useForm } from 'react-hook-form';
 import { signInSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useForm } from 'react-hook-form';
+import SignInForm from './sign-in-form';
+
+const mockMutateAsync = jest.fn().mockResolvedValue({});
+jest.mock('@/hooks', () => ({
+  useLogin: () => ({ mutateAsync: mockMutateAsync, isPending: false }),
+}));
 
 jest.mock('react-hook-form', () => ({
   useForm: jest.fn(),
@@ -129,6 +134,7 @@ describe('SignInForm', () => {
       e.preventDefault();
       callback({ email: 'test@example.com', password: 'password123' });
     });
+    mockMutateAsync.mockClear();
   });
 
   afterEach(() => {
@@ -313,19 +319,19 @@ describe('SignInForm', () => {
       expect(mockHandleSubmit).toHaveBeenCalled();
     });
 
-    it('logs form data when onSubmit is called', () => {
+    it('calls loginMutation.mutateAsync with form data when submitted', async () => {
       render(<SignInForm onSwitchToSignUp={mockOnSwitchToSignUp} />);
 
       const form = screen.getByTestId('form-wrapper');
       fireEvent.submit(form);
 
-      expect(mockConsoleLog).toHaveBeenCalledWith('Sign in form is valid and ready to submit:', {
+      expect(mockMutateAsync).toHaveBeenCalledWith({
         email: 'test@example.com',
         password: 'password123',
       });
     });
 
-    it('handles different form data correctly', () => {
+    it('calls loginMutation.mutateAsync with custom data', async () => {
       const customFormData = { email: 'custom@test.com', password: 'custompass' };
       mockHandleSubmit.mockImplementation(callback => (e: React.FormEvent) => {
         e.preventDefault();
@@ -337,10 +343,7 @@ describe('SignInForm', () => {
       const form = screen.getByTestId('form-wrapper');
       fireEvent.submit(form);
 
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        'Sign in form is valid and ready to submit:',
-        customFormData,
-      );
+      expect(mockMutateAsync).toHaveBeenCalledWith(customFormData);
     });
   });
 

@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import App from './App';
 
 const renderApp = () => {
@@ -78,8 +78,7 @@ describe('App Component', () => {
   });
 
   it('shows dashboard when authenticated', async () => {
-    localStorage.setItem('userToken', 'fake-token');
-    localStorage.setItem('user', 'fake-user');
+    localStorage.setItem('auth_token', 'fake-token');
 
     await act(async () => {
       renderApp();

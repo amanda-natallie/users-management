@@ -1,10 +1,14 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import SignUpForm from './sign-up-form';
-import { useForm } from 'react-hook-form';
 import { signUpSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useForm } from 'react-hook-form';
+import SignUpForm from './sign-up-form';
 
-// Mock the dependencies
+const mockMutateAsync = jest.fn().mockResolvedValue({});
+jest.mock('@/hooks', () => ({
+  useRegister: () => ({ mutateAsync: mockMutateAsync, isPending: false }),
+}));
+
 jest.mock('react-hook-form', () => ({
   useForm: jest.fn(),
 }));
@@ -124,9 +128,6 @@ jest.mock('@/components/forms', () => ({
   ),
 }));
 
-// Mock console.log to test the onSubmit function
-const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
-
 describe('SignUpForm', () => {
   const mockOnSwitchToSignIn = jest.fn();
   const mockHandleSubmit = jest.fn();
@@ -156,14 +157,6 @@ describe('SignUpForm', () => {
         confirmPassword: 'password123',
       });
     });
-  });
-
-  afterEach(() => {
-    mockConsoleLog.mockClear();
-  });
-
-  afterAll(() => {
-    mockConsoleLog.mockRestore();
   });
 
   describe('Component Rendering', () => {
@@ -486,7 +479,7 @@ describe('SignUpForm', () => {
       const form = screen.getByTestId('form-wrapper');
       fireEvent.submit(form);
 
-      expect(mockConsoleLog).toHaveBeenCalledWith('Sign up form is valid and ready to submit:', {
+      expect(mockMutateAsync).toHaveBeenCalledWith({
         email: 'test@example.com',
         password: 'password123',
         confirmPassword: 'password123',
@@ -509,10 +502,7 @@ describe('SignUpForm', () => {
       const form = screen.getByTestId('form-wrapper');
       fireEvent.submit(form);
 
-      expect(mockConsoleLog).toHaveBeenCalledWith(
-        'Sign up form is valid and ready to submit:',
-        customFormData,
-      );
+      expect(mockMutateAsync).toHaveBeenCalledWith(customFormData);
     });
   });
 

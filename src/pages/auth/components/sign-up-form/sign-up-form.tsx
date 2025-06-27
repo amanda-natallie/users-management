@@ -1,9 +1,10 @@
+import { ControlledFormField, FormWrapper, PasswordStrength } from '@/components/forms';
+import { AuthLayout } from '@/components/layout';
+import { useRegister } from '@/hooks';
+import { signUpSchema, type SignUpFormData } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signUpSchema, type SignUpFormData } from '@/schemas';
-import { AuthLayout } from '@/components/layout';
-import { FormWrapper, ControlledFormField, PasswordStrength } from '@/components/forms';
 
 interface SignUpFormProps {
   onSwitchToSignIn: () => void;
@@ -14,6 +15,7 @@ const SignUpForm = ({ onSwitchToSignIn, isFlipping = false }: SignUpFormProps) =
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const registerMutation = useRegister();
 
   const {
     control,
@@ -32,8 +34,12 @@ const SignUpForm = ({ onSwitchToSignIn, isFlipping = false }: SignUpFormProps) =
 
   const password = watch('password', '');
 
-  const onSubmit = (data: SignUpFormData) => {
-    console.log('Sign up form is valid and ready to submit:', data);
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      await registerMutation.mutateAsync(data);
+    } catch (error) {
+      console.error('Registration error:', error);
+    }
   };
 
   return (
@@ -45,7 +51,13 @@ const SignUpForm = ({ onSwitchToSignIn, isFlipping = false }: SignUpFormProps) =
       onSwitch={onSwitchToSignIn}
       isFlipping={isFlipping}
     >
-      <FormWrapper onSubmit={handleSubmit(onSubmit)} submitText="Create Account" isValid={isValid}>
+      <FormWrapper
+        onSubmit={handleSubmit(onSubmit)}
+        submitText="Create Account"
+        isValid={isValid}
+        loading={registerMutation.isPending}
+        loadingText="Creating your account..."
+      >
         <ControlledFormField
           name="email"
           control={control}

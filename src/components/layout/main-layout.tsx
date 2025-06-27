@@ -1,6 +1,6 @@
 import { ThemeToggle } from '@/components/theme';
-import { ReactNode } from 'react';
-import { Toaster } from '../ui/sonner';
+import { Toaster } from '@/components/ui/sonner';
+import { type ReactNode } from 'react';
 import Modal from './modal';
 
 interface MainLayoutProps {

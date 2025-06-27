@@ -1,6 +1,6 @@
+import FormField from '@/components/forms/form-field/form-field';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
-import FormField from '../form-field/form-field';
 
 export interface ControlledFormFieldProps<T extends FieldValues> {
   name: FieldPath<T>;

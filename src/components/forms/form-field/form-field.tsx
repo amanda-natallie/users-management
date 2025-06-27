@@ -1,9 +1,9 @@
-import { forwardRef } from 'react';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/utils';
+import { Eye, EyeOff } from 'lucide-react';
+import { forwardRef } from 'react';
 
 interface FormFieldProps {
   id: string;
@@ -47,6 +47,7 @@ const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         <div className="relative">
           <Input
             {...props}
+            autoComplete="off"
             id={id}
             ref={ref}
             type={inputType}

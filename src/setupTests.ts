@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
-import { env } from './__mocks__/env';
 import React from 'react';
+import { env } from './__mocks__/env';
 
-// Mock do ResizeObserver que não está disponível no jsdom
 Object.defineProperty(window, 'ResizeObserver', {
   writable: true,
   value: jest.fn().mockImplementation(() => ({
@@ -12,22 +11,20 @@ Object.defineProperty(window, 'ResizeObserver', {
   })),
 });
 
-// Mock do matchMedia que não está disponível no jsdom
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
 });
 
-// Mock do IntersectionObserver
 Object.defineProperty(window, 'IntersectionObserver', {
   writable: true,
   value: jest.fn().mockImplementation(() => ({
@@ -37,7 +34,6 @@ Object.defineProperty(window, 'IntersectionObserver', {
   })),
 });
 
-// Mock do window.scrollTo
 Object.defineProperty(window, 'scrollTo', {
   writable: true,
   value: jest.fn(),
@@ -56,7 +52,6 @@ jest.mock('@/utils/env', () => ({
   env,
 }));
 
-// Mock do react-router para evitar dependências de TextEncoder e hooks
 jest.mock('react-router', () => ({
   Routes: ({ children }: { children: React.ReactNode }) =>
     React.createElement('div', { 'data-testid': 'routes' }, children),
@@ -66,4 +61,28 @@ jest.mock('react-router', () => ({
   useLocation: () => ({ pathname: '/' }),
   useParams: () => ({}),
   useMatch: () => ({}),
+}));
+
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  QueryClient: jest.fn().mockImplementation(() => ({
+    invalidateQueries: jest.fn(),
+    setQueryData: jest.fn(),
+    getQueryData: jest.fn(),
+    clear: jest.fn(),
+  })),
+  useQuery: jest.fn(),
+  useMutation: jest.fn(() => ({
+    mutate: jest.fn(),
+    mutateAsync: jest.fn(),
+    isLoading: false,
+    isError: false,
+    error: null,
+    data: null,
+  })),
+  useQueryClient: jest.fn(() => ({
+    invalidateQueries: jest.fn(),
+    setQueryData: jest.fn(),
+    getQueryData: jest.fn(),
+  })),
 }));

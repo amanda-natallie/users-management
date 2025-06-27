@@ -1,5 +1,6 @@
 import { FullscreenLoader } from '@/components/layout';
 import ROUTES from '@/constants/routes';
+import { authUtils } from '@/utils/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -10,15 +11,12 @@ interface AuthGuardProps {
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
 
+  const isAuthenticated = authUtils.isAuthenticated();
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('userToken');
-
     if (!isAuthenticated) {
       navigate(ROUTES.AUTH, { replace: true });
     }
-  }, [navigate]);
-
-  const isAuthenticated = localStorage.getItem('userToken');
+  }, [isAuthenticated, navigate]);
 
   if (!isAuthenticated) {
     return <FullscreenLoader message="Checking authentication..." />;
