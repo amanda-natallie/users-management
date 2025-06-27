@@ -1,5 +1,6 @@
 import { ThemeToggle } from '@/components/theme';
 import { ReactNode } from 'react';
+import Modal from './modal';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ const MainLayout = ({ children, dataTestId }: MainLayoutProps) => {
   return (
     <div className="relative" data-testid={dataTestId}>
       <ThemeToggle />
+      <Modal />
       {children}
     </div>
   );

@@ -1,23 +1,17 @@
-import { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router';
-import { NotFound, FullscreenLoader } from '@/components/layout';
+import { FullscreenLoader, NotFound } from '@/components/layout';
 import { AuthGuard } from '@/components/navigation';
 import ROUTES from '@/constants/routes';
-import { ThemeToggle } from './components/theme';
+import { Suspense, lazy } from 'react';
+import { Route, Routes } from 'react-router';
 
-// Lazy load pages
 const AuthPage = lazy(() => import('./pages/auth/auth'));
 const DashboardPage = lazy(() => import('./pages/dashboard/dashboard'));
 
 function App() {
   return (
     <Suspense fallback={<FullscreenLoader />}>
-      <ThemeToggle />
       <Routes>
-        {/* Public route */}
         <Route path={ROUTES.AUTH} element={<AuthPage />} />
-
-        {/* Protected route */}
         <Route
           path={ROUTES.HOME}
           element={
@@ -26,8 +20,6 @@ function App() {
             </AuthGuard>
           }
         />
-
-        {/* 404 Not Found */}
         <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
       </Routes>
     </Suspense>
