@@ -1,7 +1,5 @@
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AuthPage from './auth';
-
-// Mock the dependencies
 jest.mock('./components', () => ({
   SignInForm: ({
     onSwitchToSignUp,
@@ -51,75 +49,67 @@ describe('AuthPage', () => {
   });
 
   describe('Initial Rendering', () => {
-    it('renders SignUpForm by default', () => {
+    it('renders SignInForm by default', () => {
       render(<AuthPage />);
 
-      expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
-      expect(screen.queryByTestId('sign-in-form')).not.toBeInTheDocument();
-      expect(screen.getByText('Sign Up Form')).toBeInTheDocument();
+      expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
+      expect(screen.queryByTestId('sign-up-form')).not.toBeInTheDocument();
+      expect(screen.getByText('Sign In Form')).toBeInTheDocument();
     });
 
     it('renders within MainLayout', () => {
       render(<AuthPage />);
 
       expect(screen.getByTestId('main-layout')).toBeInTheDocument();
-      expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
+      expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
     });
 
     it('initializes with correct default state', () => {
       render(<AuthPage />);
 
-      // Should show SignUpForm initially
-      expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
+      expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
     });
   });
 
   describe('Form Switching Functionality', () => {
-    it('switches from SignUpForm to SignInForm when switch button is clicked', async () => {
-      render(<AuthPage />);
-
-      // Initially shows SignUpForm
-      expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
-      expect(screen.queryByTestId('sign-in-form')).not.toBeInTheDocument();
-
-      // Click switch button
-      await act(async () => {
-        const switchButton = screen.getByTestId('switch-to-signin');
-        fireEvent.click(switchButton);
-      });
-
-      // Should show SignInForm after switch
-      await waitFor(() => {
-        expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
-        expect(screen.queryByTestId('sign-up-form')).not.toBeInTheDocument();
-        expect(screen.getByText('Sign In Form')).toBeInTheDocument();
-      });
-    });
-
     it('switches from SignInForm to SignUpForm when switch button is clicked', async () => {
       render(<AuthPage />);
 
-      // First switch to SignInForm
+      expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
+      expect(screen.queryByTestId('sign-up-form')).not.toBeInTheDocument();
+
       await act(async () => {
-        const switchToSignInButton = screen.getByTestId('switch-to-signin');
-        fireEvent.click(switchToSignInButton);
+        const switchButton = screen.getByTestId('switch-to-signup');
+        fireEvent.click(switchButton);
       });
 
-      // Should show SignInForm
       await waitFor(() => {
-        expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
+        expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
+        expect(screen.queryByTestId('sign-in-form')).not.toBeInTheDocument();
+        expect(screen.getByText('Sign Up Form')).toBeInTheDocument();
       });
+    });
 
-      // Now switch back to SignUpForm
+    it('switches from SignUpForm to SignInForm when switch button is clicked', async () => {
+      render(<AuthPage />);
+
       await act(async () => {
         const switchToSignUpButton = screen.getByTestId('switch-to-signup');
         fireEvent.click(switchToSignUpButton);
       });
 
-      // Should show SignUpForm again
       await waitFor(() => {
         expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
-        expect(screen.queryByTestId('sign-in-form')).not.toBeInTheDocument();
+      });
+
+      await act(async () => {
+        const switchToSignInButton = screen.getByTestId('switch-to-signin');
+        fireEvent.click(switchToSignInButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
+        expect(screen.queryByTestId('sign-up-form')).not.toBeInTheDocument();
       });
     });
   });
@@ -128,16 +118,13 @@ describe('AuthPage', () => {
     it('sets flipping state to true when switching forms', async () => {
       render(<AuthPage />);
 
-      // Initially not flipping
-      expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
+      expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
 
-      // Click switch button
       await act(async () => {
-        const switchButton = screen.getByTestId('switch-to-signin');
+        const switchButton = screen.getByTestId('switch-to-signup');
         fireEvent.click(switchButton);
       });
 
-      // Should be flipping immediately after click
       await waitFor(() => {
         expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
       });
@@ -146,125 +133,104 @@ describe('AuthPage', () => {
     it('resets flipping state to false after timeout', async () => {
       render(<AuthPage />);
 
-      // Click switch button
-      const switchButton = screen.getByTestId('switch-to-signin');
+      const switchButton = screen.getByTestId('switch-to-signup');
       await act(async () => {
         fireEvent.click(switchButton);
       });
 
-      // Should be flipping
       await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
+        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('flipping');
       });
 
-      // Fast-forward time by 150ms
       await act(async () => {
         jest.advanceTimersByTime(150);
       });
 
-      // Should not be flipping anymore
       await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
+        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
       });
     });
 
     it('handles multiple rapid switches correctly', async () => {
       render(<AuthPage />);
 
-      // First switch
-      const switchToSignInButton = screen.getByTestId('switch-to-signin');
-      await act(async () => {
-        fireEvent.click(switchToSignInButton);
-      });
-
-      // Should be flipping
-      await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
-      });
-
-      // Fast-forward time to complete first switch
-      await act(async () => {
-        jest.advanceTimersByTime(150);
-      });
-
-      // Should not be flipping
-      await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
-      });
-
-      // Second switch
       const switchToSignUpButton = screen.getByTestId('switch-to-signup');
       await act(async () => {
         fireEvent.click(switchToSignUpButton);
       });
 
-      // Should be flipping again
       await waitFor(() => {
         expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('flipping');
       });
 
-      // Fast-forward time to complete second switch
       await act(async () => {
         jest.advanceTimersByTime(150);
       });
 
-      // Should not be flipping anymore
       await waitFor(() => {
         expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
       });
-    });
-  });
 
-  describe('State Management', () => {
-    it('updates isSignUp state correctly', async () => {
-      render(<AuthPage />);
-
-      // Initially should be SignUpForm
-      expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
-
-      // Switch to SignInForm
       const switchToSignInButton = screen.getByTestId('switch-to-signin');
       await act(async () => {
         fireEvent.click(switchToSignInButton);
       });
 
-      // Complete the animation
+      await waitFor(() => {
+        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
+      });
+
       await act(async () => {
         jest.advanceTimersByTime(150);
       });
 
-      // Should now show SignInForm
       await waitFor(() => {
-        expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
-        expect(screen.queryByTestId('sign-up-form')).not.toBeInTheDocument();
+        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
+      });
+    });
+  });
+
+  describe('State Management', () => {
+    it('updates isSignIn state correctly', async () => {
+      render(<AuthPage />);
+
+      expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
+
+      const switchToSignUpButton = screen.getByTestId('switch-to-signup');
+      await act(async () => {
+        fireEvent.click(switchToSignUpButton);
+      });
+
+      await act(async () => {
+        jest.advanceTimersByTime(150);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
+        expect(screen.queryByTestId('sign-in-form')).not.toBeInTheDocument();
       });
     });
 
     it('manages isFlipping state correctly', async () => {
       render(<AuthPage />);
 
-      // Initially not flipping
-      expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
+      expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
 
-      // Start flip
-      const switchButton = screen.getByTestId('switch-to-signin');
+      const switchButton = screen.getByTestId('switch-to-signup');
       await act(async () => {
         fireEvent.click(switchButton);
       });
 
-      // Should be flipping
       await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
+        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('flipping');
       });
 
-      // Complete flip
       await act(async () => {
         jest.advanceTimersByTime(150);
       });
 
-      // Should not be flipping
       await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
+        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
       });
     });
   });
@@ -273,60 +239,51 @@ describe('AuthPage', () => {
     it('handles rapid consecutive clicks without breaking', async () => {
       render(<AuthPage />);
 
-      const switchToSignInButton = screen.getByTestId('switch-to-signin');
+      const switchToSignUpButton = screen.getByTestId('switch-to-signup');
 
-      // Multiple rapid clicks
       await act(async () => {
-        fireEvent.click(switchToSignInButton);
-        fireEvent.click(switchToSignInButton);
-        fireEvent.click(switchToSignInButton);
+        fireEvent.click(switchToSignUpButton);
+        fireEvent.click(switchToSignUpButton);
+        fireEvent.click(switchToSignUpButton);
       });
 
-      // Should still be flipping
       await waitFor(() => {
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
+        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('flipping');
       });
 
-      // Complete the animation
       await act(async () => {
         jest.advanceTimersByTime(150);
       });
 
-      // Should show SignInForm
       await waitFor(() => {
-        expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
+        expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
       });
     });
 
     it('maintains correct state after animation completes', async () => {
       render(<AuthPage />);
 
-      // Switch to SignInForm
-      const switchToSignInButton = screen.getByTestId('switch-to-signin');
-      await act(async () => {
-        fireEvent.click(switchToSignInButton);
-      });
-
-      // Complete animation
-      await act(async () => {
-        jest.advanceTimersByTime(150);
-      });
-
-      // Should be in SignInForm state
-      await waitFor(() => {
-        expect(screen.getByTestId('sign-in-form')).toBeInTheDocument();
-        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('not-flipping');
-      });
-
-      // Should be able to switch back
       const switchToSignUpButton = screen.getByTestId('switch-to-signup');
       await act(async () => {
         fireEvent.click(switchToSignUpButton);
       });
 
-      // Should start flipping again
+      await act(async () => {
+        jest.advanceTimersByTime(150);
+      });
+
       await waitFor(() => {
-        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('flipping');
+        expect(screen.getByTestId('sign-up-form')).toBeInTheDocument();
+        expect(screen.getByTestId('signup-flipping-state')).toHaveTextContent('not-flipping');
+      });
+
+      const switchToSignInButton = screen.getByTestId('switch-to-signin');
+      await act(async () => {
+        fireEvent.click(switchToSignInButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId('signin-flipping-state')).toHaveTextContent('flipping');
       });
     });
   });

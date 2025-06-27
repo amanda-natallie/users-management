@@ -1,9 +1,9 @@
+import { MainLayout } from '@/components/layout';
 import { useState } from 'react';
 import { SignInForm, SignUpForm } from './components';
-import { MainLayout } from '@/components/layout';
 
 const AuthPage = () => {
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
 
   const handleFlip = (toSignUp: boolean) => {
