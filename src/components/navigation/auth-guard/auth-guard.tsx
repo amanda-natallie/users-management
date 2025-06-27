@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import FullscreenLoader from '../fullscreen-loader';
+import { FullscreenLoader } from '@/components/layout';
 import ROUTES from '@/constants/routes';
 
 interface AuthGuardProps {

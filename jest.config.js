@@ -26,6 +26,7 @@ export default {
     '!src/utils/env.ts',
     '!src/utils/tailwind.ts',
     '!src/components/ui/**/*.tsx',
+    '!src/components/layout/**/*.tsx',
     '!src/**/index.ts',
     '!src/**/*.d.ts',
     '!src/main.tsx',

@@ -1,6 +1,6 @@
 import { AlertTriangle } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ROUTES from '@/constants/routes';
 import { Button } from '@/components/ui/button';
 

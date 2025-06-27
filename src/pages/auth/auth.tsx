@@ -1,9 +1,28 @@
-const AuthenticationPage = () => {
+import { useState } from 'react';
+import { SignInForm, SignUpForm } from './components';
+import { MainLayout } from '@/components/layout';
+
+const AuthPage = () => {
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [isFlipping, setIsFlipping] = useState(false);
+
+  const handleFlip = (toSignUp: boolean) => {
+    setIsFlipping(true);
+    setTimeout(() => {
+      setIsSignUp(toSignUp);
+      setIsFlipping(false);
+    }, 150);
+  };
+
   return (
-    <h1 className="text-3xl font-bold underline" data-testid="auth-page">
-      AuthenticationPage
-    </h1>
+    <MainLayout dataTestId="auth-page">
+      {isSignUp ? (
+        <SignUpForm onSwitchToSignIn={() => handleFlip(false)} isFlipping={isFlipping} />
+      ) : (
+        <SignInForm onSwitchToSignUp={() => handleFlip(true)} isFlipping={isFlipping} />
+      )}
+    </MainLayout>
   );
 };
 
-export default AuthenticationPage;
+export default AuthPage;

@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router';
-import { AuthGuard, NotFound, FullscreenLoader } from '@/components/layout';
+import { NotFound, FullscreenLoader } from '@/components/layout';
+import { AuthGuard } from '@/components/navigation';
 import ROUTES from '@/constants/routes';
 import { ThemeToggle } from './components/theme';
 
