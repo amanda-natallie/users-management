@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import { FullscreenLoader } from '@/components/layout';
 import ROUTES from '@/constants/routes';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -18,7 +18,6 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     }
   }, [navigate]);
 
-  // Check if user is authenticated
   const isAuthenticated = localStorage.getItem('userToken');
 
   if (!isAuthenticated) {

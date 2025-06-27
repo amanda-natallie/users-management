@@ -4,19 +4,12 @@
  */
 
 export const env = {
-  // API Configuration
   API_URL: import.meta.env.VITE_API_URL || '',
   API_KEY: import.meta.env.VITE_API_KEY || '',
-
-  // App Configuration
   APP_NAME: import.meta.env.VITE_APP_NAME || 'User Backoffice',
   APP_VERSION: import.meta.env.VITE_APP_VERSION || '1.0.0',
-
-  // Feature Flags
   ENABLE_DEBUG: import.meta.env.VITE_ENABLE_DEBUG === 'true',
   ENABLE_ANALYTICS: import.meta.env.VITE_ENABLE_ANALYTICS === 'true',
-
-  // Environment
   NODE_ENV: import.meta.env.NODE_ENV || 'development',
   IS_DEV: import.meta.env.NODE_ENV === 'development',
   IS_PROD: import.meta.env.NODE_ENV === 'production',

@@ -119,39 +119,32 @@
     transform-style: preserve-3d;
   }
 
-  /* Enhanced focus styles for v4 */
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
-  /* Purple gradient utilities */
   .bg-gradient-purple {
     @apply bg-gradient-to-br from-purple-50 via-background to-purple-100 dark:from-purple-950/20 dark:via-background dark:to-purple-900/20;
   }
 
-  /* Enhanced shadow utilities */
   .shadow-purple {
     @apply shadow-xl shadow-purple-900/20 dark:shadow-purple-900/80;
   }
 }
 
 @layer components {
-  /* Enhanced input focus styles */
   .input-focus {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 dark:focus-visible:ring-purple-400 dark:focus-visible:ring-offset-purple-900;
   }
 
-  /* Purple error styles */
   .input-error {
     @apply border-purple-500 focus-visible:ring-purple-500 dark:border-purple-400 dark:focus-visible:ring-purple-400;
   }
 
-  /* Enhanced button styles */
   .btn-purple {
     @apply bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
-  /* Purple theme specific utilities */
   .text-purple-error {
     @apply text-purple-600 dark:text-purple-400;
   }

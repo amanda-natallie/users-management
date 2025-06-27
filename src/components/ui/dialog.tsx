@@ -50,17 +50,14 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          // Mobile
           'data-[state=open]:slide-in-from-bottom',
           'data-[state=closed]:slide-out-to-bottom',
           'bottom-0 left-0 right-0',
           'rounded-t-lg border-0 shadow-none w-screen',
-          // Desktop
           'sm:data-[state=open]:slide-in-from-bottom-0 sm:data-[state=open]:fade-in-0 sm:data-[state=open]:zoom-in-95',
           'sm:data-[state=closed]:slide-out-to-bottom-0 sm:data-[state=closed]:fade-out-0 sm:data-[state=closed]:zoom-out-95',
           'sm:top-[50%] sm:left-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]',
           'sm:rounded-lg sm:border sm:purple-shadow sm:max-w-lg sm:h-fit',
-          //Common
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'max-h-[90vh] overflow-y-auto',
           'gap-4 fixed flex flex-col z-50 duration-200 p-6',

@@ -1,7 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import useThemeStore from './theme-store';
-
-// Mock zustand persist middleware
 jest.mock('zustand/middleware', () => ({
   persist: jest.fn(config => config),
 }));
@@ -13,10 +11,7 @@ describe('Theme Store', () => {
   let mockDispatchEvent: jest.Mock;
 
   beforeEach(() => {
-    // Reset the store before each test
     useThemeStore.setState({ theme: 'system' });
-
-    // Mock document.documentElement
     Object.defineProperty(document, 'documentElement', {
       value: {
         classList: {
@@ -27,7 +22,6 @@ describe('Theme Store', () => {
       writable: true,
     });
 
-    // Mock matchMedia
     mockAddEventListener = jest.fn();
     mockRemoveEventListener = jest.fn();
     mockDispatchEvent = jest.fn();
@@ -45,7 +39,6 @@ describe('Theme Store', () => {
       value: mockMatchMedia,
     });
 
-    // Mock localStorage for persist
     const localStorageMock = {
       getItem: jest.fn(),
       setItem: jest.fn(),
@@ -57,7 +50,6 @@ describe('Theme Store', () => {
       writable: true,
     });
 
-    // Clear all mocks
     jest.clearAllMocks();
   });
 
@@ -137,7 +129,7 @@ describe('Theme Store', () => {
       const { theme } = useThemeStore.getState();
       expect(theme).toBe('system');
       expect(mockClassList.remove).toHaveBeenCalledWith('light', 'dark');
-      expect(mockClassList.add).toHaveBeenCalledWith('light'); // default when matches is false
+      expect(mockClassList.add).toHaveBeenCalledWith('light');
     });
   });
 
@@ -156,7 +148,7 @@ describe('Theme Store', () => {
       initializeTheme();
 
       expect(mockClassList.remove).toHaveBeenCalledWith('light', 'dark');
-      expect(mockClassList.add).toHaveBeenCalledWith('light'); // default when matches is false
+      expect(mockClassList.add).toHaveBeenCalledWith('light');
     });
 
     it('should apply dark theme when system preference is dark', () => {
@@ -170,7 +162,6 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Mock matchMedia to return dark preference
       mockMatchMedia.mockReturnValue({
         matches: true,
         media: '(prefers-color-scheme: dark)',
@@ -231,7 +222,6 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Mock matchMedia to return light preference
       mockMatchMedia.mockReturnValue({
         matches: false,
         media: '(prefers-color-scheme: dark)',
@@ -257,7 +247,6 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Mock matchMedia to return dark preference
       mockMatchMedia.mockReturnValue({
         matches: true,
         media: '(prefers-color-scheme: dark)',
@@ -285,16 +274,12 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Set theme to system
       const { setTheme } = useThemeStore.getState();
       setTheme('system');
 
-      // Clear previous calls
       mockClassList.remove.mockClear();
       mockClassList.add.mockClear();
 
-      // Simulate system theme change by calling applyTheme directly
-      // This tests the branch where theme === "system" in the event listener
       const { initializeTheme } = useThemeStore.getState();
       initializeTheme();
 
@@ -312,20 +297,15 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Set theme to light (not system)
       const { setTheme } = useThemeStore.getState();
       setTheme('light');
 
-      // Clear previous calls
       mockClassList.remove.mockClear();
       mockClassList.add.mockClear();
 
-      // Simulate system theme change by calling applyTheme directly
-      // This tests the branch where theme !== "system" in the event listener
       const { initializeTheme } = useThemeStore.getState();
       initializeTheme();
 
-      // Should still apply theme because initializeTheme always applies the current theme
       expect(mockClassList.remove).toHaveBeenCalledWith('light', 'dark');
       expect(mockClassList.add).toHaveBeenCalledWith('light');
     });
@@ -333,8 +313,6 @@ describe('Theme Store', () => {
 
   describe('Module Initialization', () => {
     it('should initialize theme when window is defined', () => {
-      // The module initialization code runs when the module is imported
-      // We can test this by checking that the store is properly initialized
       const { theme, initializeTheme } = useThemeStore.getState();
 
       expect(theme).toBe('system');
@@ -342,8 +320,6 @@ describe('Theme Store', () => {
     });
 
     it('should handle window not being defined', () => {
-      // This test verifies that the module can be imported without errors
-      // even when window is not defined (though in our test environment it is)
       expect(() => {
         const { theme } = useThemeStore.getState();
         expect(theme).toBe('system');
@@ -353,7 +329,6 @@ describe('Theme Store', () => {
 
   describe('Event Listener Branch Coverage', () => {
     it('should test the event listener when theme is system', () => {
-      // This test specifically targets the branch coverage for the event listener
       const mockClassList = {
         remove: jest.fn(),
         add: jest.fn(),
@@ -363,16 +338,12 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Set theme to system and trigger a theme change
       const { setTheme } = useThemeStore.getState();
       setTheme('system');
 
-      // Clear previous calls
       mockClassList.remove.mockClear();
       mockClassList.add.mockClear();
 
-      // Simulate the event listener being triggered when theme is system
-      // This covers the branch: if (theme === "system") { applyTheme(theme) }
       const { initializeTheme } = useThemeStore.getState();
       initializeTheme();
 
@@ -381,7 +352,6 @@ describe('Theme Store', () => {
     });
 
     it('should test the event listener when theme is not system', () => {
-      // This test specifically targets the branch coverage for the event listener
       const mockClassList = {
         remove: jest.fn(),
         add: jest.fn(),
@@ -391,20 +361,15 @@ describe('Theme Store', () => {
         writable: true,
       });
 
-      // Set theme to light (not system)
       const { setTheme } = useThemeStore.getState();
       setTheme('light');
 
-      // Clear previous calls
       mockClassList.remove.mockClear();
       mockClassList.add.mockClear();
 
-      // Simulate the event listener being triggered when theme is not system
-      // This covers the branch: if (theme === "system") { ... } else { /* do nothing */ }
       const { initializeTheme } = useThemeStore.getState();
       initializeTheme();
 
-      // Should still apply theme because initializeTheme always applies the current theme
       expect(mockClassList.remove).toHaveBeenCalledWith('light', 'dark');
       expect(mockClassList.add).toHaveBeenCalledWith('light');
     });
@@ -423,24 +388,19 @@ describe('Theme Store', () => {
 
       const { setTheme } = useThemeStore.getState();
 
-      // Change from system to light
       setTheme('light');
       expect(mockClassList.add).toHaveBeenCalledWith('light');
 
-      // Change from light to dark
       setTheme('dark');
       expect(mockClassList.add).toHaveBeenCalledWith('dark');
 
-      // Change from dark to system
       setTheme('system');
-      expect(mockClassList.add).toHaveBeenCalledWith('light'); // default when matches is false
+      expect(mockClassList.add).toHaveBeenCalledWith('light');
 
-      // Verify remove was called for each change
       expect(mockClassList.remove).toHaveBeenCalledTimes(3);
     });
 
     it('should handle document.documentElement being null', () => {
-      // Mock document.documentElement as null
       Object.defineProperty(document, 'documentElement', {
         value: null,
         writable: true,
@@ -448,12 +408,10 @@ describe('Theme Store', () => {
 
       const { setTheme } = useThemeStore.getState();
 
-      // Should throw error because the code doesn't handle null documentElement
       expect(() => setTheme('light')).toThrow('Cannot read properties of null');
     });
 
     it('should handle classList methods being undefined', () => {
-      // Mock classList with undefined methods
       Object.defineProperty(document, 'documentElement', {
         value: {
           classList: {
@@ -466,7 +424,6 @@ describe('Theme Store', () => {
 
       const { setTheme } = useThemeStore.getState();
 
-      // Should throw error because the code doesn't handle undefined methods
       expect(() => setTheme('light')).toThrow('root.classList.remove is not a function');
     });
   });
