@@ -1,6 +1,7 @@
 import useToast from '@/hooks/use-toast/use-toast';
 import { UsersService, type CreateUserPayload, type UpdateUserPayload } from '@/services';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 export const userKeys = {
   all: ['users'] as const,
@@ -8,12 +9,18 @@ export const userKeys = {
   list: (page: number) => [...userKeys.lists(), page] as const,
 };
 
-export const useUsers = (page: number = 1) => {
-  return useQuery({
+export const useUsers = () => {
+  const [page, setPage] = useState(1);
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+
+  const query = useQuery({
     queryKey: userKeys.list(page),
     queryFn: () => UsersService.getUsers(page),
     staleTime: 5 * 60 * 1000,
   });
+  return { query, handlePageChange };
 };
 
 export const useCreateUser = () => {

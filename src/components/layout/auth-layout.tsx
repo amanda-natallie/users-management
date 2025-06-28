@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/utils';
+import type { ReactNode } from 'react';
 
 interface AuthLayoutProps {
   title: string;
@@ -27,7 +27,7 @@ const AuthLayout = ({
       <div className="w-full max-w-md perspective-1000">
         <Card
           className={cn(
-            'transition-transform duration-300 transform-style-preserve-3d shadow-purple border-purple-200/50 dark:border-purple-800/50 dark:bg-muted/90',
+            'transition-transform duration-300 transform-style-preserve-3d shadow-purple',
             isFlipping && 'animate-pulse scale-95',
           )}
         >

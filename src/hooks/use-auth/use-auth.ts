@@ -38,7 +38,6 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: async (payload: LoginPayload) => {
-      console.log('LOG:: useLogin mutationFn called', payload);
       const promise = AuthService.login(payload);
 
       toast.promise(promise, {

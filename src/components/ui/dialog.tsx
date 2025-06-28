@@ -48,6 +48,7 @@ function DialogContent({
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
       <DialogPrimitive.Content
+        aria-describedby="dialog-description"
         data-slot="dialog-content"
         className={cn(
           'data-[state=open]:slide-in-from-bottom',

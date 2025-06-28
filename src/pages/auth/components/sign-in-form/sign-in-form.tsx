@@ -29,7 +29,6 @@ const SignInForm = ({ onSwitchToSignUp, isFlipping = false }: SignInFormProps) =
   });
 
   const onSubmit = async (data: SignInFormData) => {
-    console.log('LOG:: onSubmit called', data);
     try {
       await loginMutation.mutateAsync(data);
     } catch (error) {

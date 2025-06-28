@@ -6,16 +6,17 @@ import Modal from './modal';
 interface MainLayoutProps {
   children: ReactNode;
   dataTestId?: string;
+  hideThemeToggle?: boolean;
 }
 
-const MainLayout = ({ children, dataTestId }: MainLayoutProps) => {
+const MainLayout = ({ children, dataTestId, hideThemeToggle = false }: MainLayoutProps) => {
   return (
-    <div className="relative" data-testid={dataTestId}>
-      <ThemeToggle />
+    <main className="relative" data-testid={dataTestId}>
+      {!hideThemeToggle && <ThemeToggle className="fixed bottom-6 right-6 z-50" />}
       <Toaster />
       <Modal />
       {children}
-    </div>
+    </main>
   );
 };
 

@@ -2,15 +2,22 @@ import * as React from 'react';
 
 import { cn } from '@/utils';
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { as?: React.ElementType }
+>(({ className, as, ...props }, ref) => {
+  const Component = as || 'div';
+  return (
+    <Component
       ref={ref}
-      className={cn('rounded-lg border text-card-foreground shadow-sm', className)}
+      className={cn(
+        'rounded-lg border text-card-foreground shadow-md border-purple-200/50 dark:border-purple-800/50 dark:bg-muted/50',
+        className,
+      )}
       {...props}
     />
-  ),
-);
+  );
+});
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -52,4 +59,4 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardFooter.displayName = 'CardFooter';
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
