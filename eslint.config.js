@@ -7,7 +7,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config([
-  globalIgnores(['dist', 'coverage']),
+  globalIgnores(['dist', 'coverage', 'cypress', 'cypress.config.ts']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

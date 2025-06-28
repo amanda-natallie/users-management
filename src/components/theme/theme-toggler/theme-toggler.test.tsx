@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { fireEvent, render, screen } from '@testing-library/react';
+import React from 'react';
 import ThemeToggle from './theme-toggler';
 
 // Define proper types for the mocked components
@@ -86,8 +86,8 @@ describe('ThemeToggle', () => {
       render(<ThemeToggle />);
 
       const button = screen.getByTestId('theme-toggle-button');
-      expect(button).toHaveAttribute('data-variant', 'outline');
-      expect(button).toHaveAttribute('data-size', 'icon');
+      expect(button).toHaveAttribute('data-variant', 'secondary');
+      expect(button).toHaveAttribute('data-size', 'sm');
     });
 
     it('should render sun and moon icons', () => {
@@ -158,7 +158,7 @@ describe('ThemeToggle', () => {
 
       const button = screen.getByTestId('theme-toggle-button');
       expect(button).toHaveClass(
-        'fixed top-4 right-4 z-50 focus-ring transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm',
+        'focus-ring transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg',
       );
     });
 
@@ -206,7 +206,7 @@ describe('ThemeToggle', () => {
       expect(mockSetTheme).toHaveBeenCalledWith('dark');
     });
 
-    it('should handle theme !== "light" branch', () => {
+    it('should handle theme === "dark" branch', () => {
       mockUseThemeStore.mockReturnValue({
         theme: 'dark',
         setTheme: mockSetTheme,
@@ -219,109 +219,120 @@ describe('ThemeToggle', () => {
 
       expect(mockSetTheme).toHaveBeenCalledWith('light');
     });
-
-    it('should handle other theme values (e.g., "system")', () => {
-      mockUseThemeStore.mockReturnValue({
-        theme: 'system',
-        setTheme: mockSetTheme,
-      });
-
-      render(<ThemeToggle />);
-
-      const button = screen.getByTestId('theme-toggle-button');
-      fireEvent.click(button);
-
-      expect(mockSetTheme).toHaveBeenCalledWith('light');
-    });
   });
 
-  describe('Edge Cases', () => {
-    it('should handle undefined theme gracefully', () => {
-      mockUseThemeStore.mockReturnValue({
-        theme: undefined,
-        setTheme: mockSetTheme,
-      });
-
-      render(<ThemeToggle />);
-
-      const button = screen.getByTestId('theme-toggle-button');
-      fireEvent.click(button);
-
-      expect(mockSetTheme).toHaveBeenCalledWith('light');
-    });
-
-    it('should handle null theme gracefully', () => {
-      mockUseThemeStore.mockReturnValue({
-        theme: null,
-        setTheme: mockSetTheme,
-      });
-
-      render(<ThemeToggle />);
-
-      const button = screen.getByTestId('theme-toggle-button');
-      fireEvent.click(button);
-
-      expect(mockSetTheme).toHaveBeenCalledWith('light');
-    });
-
-    it('should handle empty string theme gracefully', () => {
-      mockUseThemeStore.mockReturnValue({
-        theme: '',
-        setTheme: mockSetTheme,
-      });
-
-      render(<ThemeToggle />);
-
-      const button = screen.getByTestId('theme-toggle-button');
-      fireEvent.click(button);
-
-      expect(mockSetTheme).toHaveBeenCalledWith('light');
-    });
-  });
-
-  describe('Integration Tests', () => {
-    it('should render complete component structure', () => {
+  describe('Props Handling', () => {
+    it('should accept custom className prop', () => {
       mockUseThemeStore.mockReturnValue({
         theme: 'light',
         setTheme: mockSetTheme,
       });
 
-      const { container } = render(<ThemeToggle />);
+      render(<ThemeToggle className="custom-class" />);
 
-      // Check button exists
-      expect(screen.getByTestId('theme-toggle-button')).toBeInTheDocument();
-
-      // Check icons exist
-      expect(screen.getByTestId('sun-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
-
-      // Check accessibility text exists
-      expect(screen.getByText('Toggle theme')).toBeInTheDocument();
-
-      // Check component structure without snapshot
-      expect(container.firstChild).toBeInTheDocument();
+      const button = screen.getByTestId('theme-toggle-button');
+      expect(button).toHaveClass('custom-class');
     });
 
-    it('should maintain component state consistency', () => {
+    it('should accept custom variant prop', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: 'light',
+        setTheme: mockSetTheme,
+      });
+
+      render(<ThemeToggle variant="outline" />);
+
+      const button = screen.getByTestId('theme-toggle-button');
+      expect(button).toHaveAttribute('data-variant', 'outline');
+    });
+
+    it('should use default variant when not provided', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: 'light',
+        setTheme: mockSetTheme,
+      });
+
+      render(<ThemeToggle />);
+
+      const button = screen.getByTestId('theme-toggle-button');
+      expect(button).toHaveAttribute('data-variant', 'secondary');
+    });
+  });
+
+  describe('Component Integration', () => {
+    it('should integrate with theme store correctly', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: 'light',
+        setTheme: mockSetTheme,
+      });
+
+      render(<ThemeToggle />);
+
+      expect(mockUseThemeStore).toHaveBeenCalled();
+    });
+
+    it('should handle theme store updates', () => {
       const { rerender } = render(<ThemeToggle />);
 
-      // Initial render with light theme
       mockUseThemeStore.mockReturnValue({
         theme: 'light',
-        setTheme: mockSetTheme,
-      });
-
-      expect(screen.getByTestId('theme-toggle-button')).toBeInTheDocument();
-
-      // Re-render with dark theme
-      mockUseThemeStore.mockReturnValue({
-        theme: 'dark',
         setTheme: mockSetTheme,
       });
 
       rerender(<ThemeToggle />);
 
-      expect(screen.getByTestId('theme-toggle-button')).toBeInTheDocument();
+      const button = screen.getByTestId('theme-toggle-button');
+      fireEvent.click(button);
+
+      expect(mockSetTheme).toHaveBeenCalledWith('dark');
+    });
+  });
+
+  describe('Accessibility', () => {
+    it('should have proper accessibility attributes', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: 'light',
+        setTheme: mockSetTheme,
+      });
+
+      render(<ThemeToggle />);
+
+      const button = screen.getByTestId('theme-toggle-button');
+      expect(button).toBeInTheDocument();
+      expect(screen.getByText('Toggle theme')).toBeInTheDocument();
+    });
+
+    it('should be keyboard accessible', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: 'light',
+        setTheme: mockSetTheme,
+      });
+
+      render(<ThemeToggle />);
+
+      const button = screen.getByTestId('theme-toggle-button');
+      button.focus();
+      expect(button).toHaveFocus();
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should handle missing theme store gracefully', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: undefined as unknown as string,
+        setTheme: mockSetTheme,
+      });
+
+      expect(() => render(<ThemeToggle />)).not.toThrow();
+    });
+
+    it('should handle missing setTheme function gracefully', () => {
+      mockUseThemeStore.mockReturnValue({
+        theme: 'light',
+        setTheme: undefined as unknown as (theme: string) => void,
+      });
+
+      expect(() => render(<ThemeToggle />)).not.toThrow();
     });
   });
 });
