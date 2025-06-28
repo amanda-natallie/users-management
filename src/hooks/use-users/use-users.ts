@@ -33,7 +33,7 @@ export const useCreateUser = () => {
 
       toast.promise(promise, {
         loading: 'Creating user...',
-        success: data => `User ${data.name} created successfully!`,
+        success: data => `User ${data.first_name} created successfully!`,
         error: 'Failed to create user. Please try again.',
       });
 
@@ -50,12 +50,12 @@ export const useUpdateUser = () => {
   const toast = useToast();
 
   return useMutation({
-    mutationFn: async ({ id, payload }: { id: string; payload: UpdateUserPayload }) => {
+    mutationFn: async ({ id, payload }: { id: number; payload: UpdateUserPayload }) => {
       const promise = UsersService.updateUser(id, payload);
 
       toast.promise(promise, {
         loading: 'Updating user...',
-        success: data => `User ${data.name} updated successfully!`,
+        success: data => `User ${data.first_name} updated successfully!`,
         error: 'Failed to update user. Please try again.',
       });
 
@@ -72,7 +72,7 @@ export const useDeleteUser = () => {
   const toast = useToast();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       const promise = UsersService.deleteUser(id);
 
       toast.promise(promise, {

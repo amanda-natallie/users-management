@@ -31,7 +31,7 @@ const UsersService = {
       throw error;
     }
   },
-  async updateUser(id: string, payload: UpdateUserPayload): Promise<UpdateUserResponse> {
+  async updateUser(id: number, payload: UpdateUserPayload): Promise<UpdateUserResponse> {
     try {
       const response = await api.put<UpdateUserResponse>(`/users/${id}`, payload);
       return response.data;
@@ -42,7 +42,7 @@ const UsersService = {
       throw error;
     }
   },
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: number): Promise<void> {
     try {
       await api.delete(`/users/${id}`);
     } catch (error) {

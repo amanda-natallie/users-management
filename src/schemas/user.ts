@@ -1,13 +1,27 @@
 import { z } from 'zod';
 
 export const createUserSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
-  job: z.string().min(1, 'Job is required').max(100, 'Job must be less than 100 characters'),
+  first_name: z
+    .string()
+    .min(1, 'First name is required')
+    .max(100, 'First name must be less than 100 characters'),
+  last_name: z
+    .string()
+    .min(1, 'Last name is required')
+    .max(100, 'Last name must be less than 100 characters'),
+  email: z.string().email('Invalid email address'),
 });
 
 export const updateUserSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
-  job: z.string().min(1, 'Job is required').max(100, 'Job must be less than 100 characters'),
+  first_name: z
+    .string()
+    .min(1, 'First name is required')
+    .max(100, 'First name must be less than 100 characters'),
+  last_name: z
+    .string()
+    .min(1, 'Last name is required')
+    .max(100, 'Last name must be less than 100 characters'),
+  email: z.string().email('Invalid email address'),
 });
 
 export const userIdSchema = z.string().min(1, 'User ID is required');

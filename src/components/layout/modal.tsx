@@ -1,62 +1,39 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import {
+  CreateUserView,
+  DeleteUserView,
+  UpdateUserView,
+} from '@/pages/dashboard/components/modals';
 import { ModalType, useModalStore } from '@/stores';
 
 const getModalContent = (modalType: ModalType | null) => {
   switch (modalType) {
     case ModalType.CREATE:
-      return {
-        title: 'Create New User',
-        content: (
-          <div className="p-4 text-center text-muted-foreground">
-            Create modal content goes here
-          </div>
-        ),
-      };
+      return <CreateUserView />;
     case ModalType.UPDATE:
-      return {
-        title: 'Update Item',
-        content: (
-          <div className="p-4 text-center text-muted-foreground">
-            Update modal content goes here
-          </div>
-        ),
-      };
+      return <UpdateUserView />;
     case ModalType.DELETE:
-      return {
-        title: 'Delete Item',
-        content: (
-          <div className="p-4 text-center text-muted-foreground">
-            Delete modal content goes here
-          </div>
-        ),
-      };
+      return <DeleteUserView />;
     default:
-      return {
-        title: 'Modal',
-        content: <div className="p-4 text-center text-muted-foreground">No content available</div>,
-      };
+      return <div className="p-4 text-center text-muted-foreground">No content available</div>;
   }
 };
 
 const Modal = () => {
   const { isOpen, modalType, closeModal } = useModalStore();
 
-  const { title, content } = getModalContent(modalType);
+  const Content = getModalContent(modalType);
 
   return (
     <Dialog open={isOpen} onOpenChange={() => closeModal()}>
       <DialogContent
-        className="sm:max-w-md w-full p-0"
-        onPointerDownOutside={e => e.preventDefault()}
-        onEscapeKeyDown={e => e.preventDefault()}
+        className="sm:max-w-md w-full p-2"
+        onPointerDownOutside={e => modalType !== ModalType.CREATE && e.preventDefault()}
+        onEscapeKeyDown={e => modalType !== ModalType.CREATE && e.preventDefault()}
         showCloseButton
         onOpenAutoFocus={e => e.preventDefault()}
       >
-        <DialogHeader className="p-6 pb-4 flex flex-row items-center justify-between space-y-0">
-          <DialogTitle className="text-xl font-semibold text-foreground">{title}</DialogTitle>
-        </DialogHeader>
-
-        <div className="px-6 pb-6">{content}</div>
+        <div className="p-6">{Content}</div>
       </DialogContent>
     </Dialog>
   );

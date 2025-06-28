@@ -19,24 +19,29 @@ export interface GetUsersResponse {
 }
 
 export interface CreateUserPayload {
-  name: string;
-  job: string;
+  first_name: string;
+  last_name: string;
+  email: string;
 }
 
 export interface CreateUserResponse {
-  name: string;
-  job: string;
+  first_name: string;
+  last_name: string;
+  email: string;
   id: string;
   createdAt: string;
 }
 
 export interface UpdateUserPayload {
-  name: string;
-  job: string;
+  first_name: string;
+  last_name: string;
+  email: string;
 }
 
 export interface UpdateUserResponse {
-  name: string;
-  job: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  id: string;
   updatedAt: string;
 }
