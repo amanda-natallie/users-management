@@ -30,6 +30,7 @@ jest.mock('@tanstack/react-query', () => ({
     isError: false,
     error: null,
     data: null,
+    isPending: false,
   })),
 }));
 
