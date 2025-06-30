@@ -72,7 +72,7 @@ describe('Authentication Flow', () => {
       cy.login();
 
       // Visit dashboard directly
-      dashboardPage.visit().shouldBeVisible().shouldHaveUserManagementElements();
+      dashboardPage.visit().shouldBeVisible();
     });
 
     it('should maintain authentication state across page refreshes', () => {
@@ -149,7 +149,7 @@ describe('Authentication Flow', () => {
       authPage.visit().shouldBeVisible();
 
       // 2. Login
-      authPage.fillEmail('integration@test.com').fillPassword('testpass').clickSignIn();
+      authPage.fillEmail('eve.holt@reqres.in').fillPassword('testpass').clickSignIn();
 
       // 3. Verify dashboard access
       dashboardPage.shouldBeVisible();

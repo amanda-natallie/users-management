@@ -2,11 +2,30 @@ import { Container, MainLayout } from '@/components/layout';
 import { ThemeToggle } from '@/components/theme';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import ROUTES from '@/constants/routes';
 import { ModalType, useModalStore } from '@/stores';
+import { LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import UsersTable from './components/users-table/users-table';
 
 const DashboardPage = () => {
   const { openModal } = useModalStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.clear();
+
+    // Clear cookies
+    document.cookie.split(';').forEach(c => {
+      document.cookie = c
+        .replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+    });
+
+    // Redirect to auth page
+    navigate(ROUTES.AUTH, { replace: true });
+  };
 
   return (
     <MainLayout hideThemeToggle>
@@ -17,6 +36,16 @@ const DashboardPage = () => {
           </div>
 
           <div className="flex items-center relative gap-4">
+            <Button
+              onClick={handleLogout}
+              className="w-10 py-4.5 px-5 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              variant="outline"
+              size="icon"
+              title="Logout"
+              data-testid="logout-button"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
             <ThemeToggle className="w-10 py-4.5 px-5" variant="outline" />
           </div>
         </Container>
@@ -37,8 +66,12 @@ const DashboardPage = () => {
             className="transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             size="default"
           >
-            <span className="hidden sm:inline">Create User</span>
-            <span className="sm:hidden">Create</span>
+            <span className="hidden sm:inline" data-testid="create-user-button">
+              Create User
+            </span>
+            <span className="sm:hidden" data-testid="create-user-button">
+              Create
+            </span>
           </Button>
         </div>
 

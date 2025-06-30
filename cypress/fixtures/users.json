@@ -1,0 +1,22 @@
+{
+  "validUser": {
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com"
+  },
+  "updatedUser": {
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane.smith@example.com"
+  },
+  "invalidUser": {
+    "first_name": "",
+    "last_name": "",
+    "email": "invalid-email"
+  },
+  "longNameUser": {
+    "first_name": "This is a very long first name that exceeds the maximum allowed length of one hundred characters and should trigger validation error",
+    "last_name": "This is a very long last name that exceeds the maximum allowed length of one hundred characters and should trigger validation error",
+    "email": "longname@example.com"
+  }
+}

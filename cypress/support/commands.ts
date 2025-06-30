@@ -36,10 +36,13 @@ Cypress.Commands.add('logout', () => {
     if ($body.find('[data-testid="user-menu"]').length > 0) {
       cy.get('[data-testid="user-menu"]').click();
       cy.get('button:contains("Logout")').click();
+    } else if ($body.find('button[data-testid="logout-button"]').length > 0) {
+      cy.get('button[data-testid="logout-button"]').should('be.visible').click();
     } else if ($body.find('button:contains("Logout")').length > 0) {
       cy.get('button:contains("Logout")').click();
     } else {
       cy.clearLocalStorage();
+      cy.clearCookies();
       cy.visit('/auth');
     }
   });
@@ -54,6 +57,8 @@ Cypress.Commands.add('clearAuthState', () => {
 declare global {
   namespace Cypress {
     interface Chainable {
+      waitForPageLoad(): Chainable<void>;
+      shouldBeVisibleAndClickable(selector: string): Chainable<void>;
       login(email?: string, password?: string): Chainable<void>;
       signup(email?: string, password?: string): Chainable<void>;
       logout(): Chainable<void>;
