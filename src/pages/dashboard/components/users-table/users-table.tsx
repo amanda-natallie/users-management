@@ -39,11 +39,11 @@ const UsersTable = () => {
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  className="border-muted-foreground/20 hover:bg-muted/30 transition-colors"
+                  className="border-purple-200 dark:border-purple-800/50 hover:bg-muted/30 transition-colors"
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id} className="py-4">
+                    <TableCell key={cell.id} className="py-4 text-muted-foreground">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -69,7 +69,7 @@ const UsersTable = () => {
         </Table>
       </div>
 
-      {hasRows && !isLoading && (
+      {hasRows && (
         <div className="flex items-center justify-between px-6 py-4 border-t border-purple-200/80 dark:border-purple-800/50">
           <div className="text-sm text-muted-foreground">
             Showing {table.getRowModel().rows.length.toLocaleString()} of{' '}
@@ -87,7 +87,7 @@ const UsersTable = () => {
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <div className="flex items-center space-x-1">
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm text-muted-foreground">
                 Page {table.getState().pagination.pageIndex + 1} of{' '}
                 {table.getPageCount().toLocaleString()}
               </span>

@@ -59,7 +59,7 @@ const useUsersTable = () => {
     {
       accessorKey: 'id',
       header: 'User ID',
-      cell: ({ row }) => <div className="font-medium text-foreground">#{row.getValue('id')}</div>,
+      cell: ({ row }) => <div>#{row.getValue('id')}</div>,
     },
 
     {
@@ -69,7 +69,7 @@ const useUsersTable = () => {
         const user = row.original;
         return (
           <div className="space-y-1">
-            <div className="font-medium text-foreground">
+            <div className="text-muted-foreground">
               {user.first_name} {user.last_name}
             </div>
           </div>
@@ -84,7 +84,7 @@ const useUsersTable = () => {
         return (
           <Button
             variant="link"
-            className="p-0 text-sm text-foreground hover:text-muted-foreground"
+            className="p-0 text-sm text-muted-foreground hover:text-muted-foreground"
             onClick={() => window.open(`mailto:${user.email}`, '_blank', 'noopener,noreferrer')}
           >
             {user.email}
@@ -103,19 +103,19 @@ const useUsersTable = () => {
               variant="outline"
               size="sm"
               onClick={() => handleEdit(user)}
-              className="h-8 w-8 p-0 focus-ring hover:bg-blue-50 hover:border-blue-200 dark:hover:bg-blue-950/20"
+              className="h-8 w-8 p-0 focus-ring hover:bg-blue-50 border-blue-600/70 dark:border-blue-400/70 hover:border-blue-200 dark:hover:bg-blue-950/20"
               aria-label={`Edit ${user.first_name} ${user.last_name}`}
             >
-              <Edit className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <Edit className="h-4 w-4 text-blue-600 dark:text-blue-400" strokeWidth={1.5} />
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleDelete(user)}
-              className="h-8 w-8 p-0 focus-ring hover:bg-red-50 hover:border-red-200 dark:hover:bg-red-950/20"
+              className="h-8 w-8 p-0 focus-ring hover:bg-red-50 border-red-600/70 dark:border-red-400/70 hover:border-red-200 dark:hover:bg-red-950/20"
               aria-label={`Delete ${user.first_name} ${user.last_name}`}
             >
-              <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
+              <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" strokeWidth={1.5} />
             </Button>
           </div>
         );

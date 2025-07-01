@@ -11,26 +11,23 @@ const DeleteUserView = () => {
     await deleteUserMutation.mutateAsync(modalData?.id as number);
     closeModal();
   };
-
+  const isLoading = deleteUserMutation.isPending;
   return (
     <UserLayout
       title={`Delete ${modalData?.first_name} ${modalData?.last_name}`}
       subtitle="Are you sure you want to delete this user? This action cannot be undone."
     >
       <div className="flex justify-end gap-2 w-full">
-        <Button
-          onClick={closeModal}
-          variant="outline"
-          className="flex-1"
-          disabled={deleteUserMutation.isPending}
-        >
+        <Button onClick={closeModal} variant="outline" className="flex-1" disabled={isLoading}>
           Cancel
         </Button>
         <Button
           onClick={onSubmit}
           className="flex-1"
           variant="destructive"
-          disabled={deleteUserMutation.isPending}
+          disabled={isLoading}
+          loading={isLoading}
+          loadingText="Deleting user..."
         >
           Delete User
         </Button>

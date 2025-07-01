@@ -10,7 +10,7 @@ interface UserLayoutProps {
 const UserLayout = ({ title, subtitle, children }: UserLayoutProps) => {
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <Card className="w-full p-0 border-none">
+      <Card className="w-full p-0 border-none shadow-none">
         <CardContent className="space-y-10">
           <div className="space-y-2 text-left">
             <h1 className="text-3xl font-bold tracking-tight">{title}</h1>

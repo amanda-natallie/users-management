@@ -19,10 +19,15 @@ const DashboardPage = () => {
 
   return (
     <MainLayout hideThemeToggle>
-      <Card as="header" className="sticky top-0 z-40 w-full border-b">
+      <Card
+        as="header"
+        className="sticky top-0 z-40 w-full border-b border-purple-200/50 rounded-none"
+      >
         <Container className="h-16">
           <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold tracking-tight text-foreground ">User Backoffice</h1>
+            <h1 className="text-xl font-bold tracking-tight text-primary dark:text-foreground">
+              User Backoffice
+            </h1>
           </div>
 
           <div className="flex items-center relative gap-4">
@@ -44,7 +49,7 @@ const DashboardPage = () => {
       <Container className="flex-wrap space-y-10 mt-10">
         <div className="flex w-full justify-between items-center">
           <div className="flex flex-col gap-2 w-full">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-primary sm:text-3xl dark:text-foreground">
               Welcome, user!
             </h1>
             <p className="text-muted-foreground">
@@ -62,7 +67,7 @@ const DashboardPage = () => {
           </Button>
         </div>
 
-        <Card as="section" className="w-full">
+        <Card as="section" className="w-full shadow-md dark:shadow-2xl dark:shadow-purple-900/50">
           <CardContent className="p-0">
             <UsersTable />
           </CardContent>
