@@ -1,6 +1,5 @@
 import { authUtils } from './auth';
 
-// Mock the AuthService
 jest.mock('@/services', () => ({
   AuthService: {
     isAuthenticated: jest.fn(),

@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { useUsers } from './use-users';
 
-// Mock the services module
 jest.mock('@/services', () => ({
   UsersService: {
     getUsers: jest.fn(),
@@ -55,7 +54,7 @@ describe('useUsers', () => {
         expect.objectContaining({
           queryKey: ['users', 'list', 1],
           queryFn: expect.any(Function),
-          staleTime: 5 * 60 * 1000, // 5 minutes
+          staleTime: 5 * 60 * 1000,
         }),
       );
     });
@@ -201,8 +200,6 @@ describe('useUsers', () => {
       const mockUsersService = jest.requireMock('@/services').UsersService;
 
       renderHook(() => useUsers());
-
-      // The service is called when the query function is executed
       expect(mockUsersService.getUsers).toBeDefined();
     });
 
@@ -223,7 +220,7 @@ describe('useUsers', () => {
 
       expect(mockUseQuery).toHaveBeenCalledWith(
         expect.objectContaining({
-          staleTime: 5 * 60 * 1000, // 5 minutes in milliseconds
+          staleTime: 5 * 60 * 1000,
         }),
       );
     });

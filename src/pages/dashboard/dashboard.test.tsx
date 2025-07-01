@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import DashboardPage from './dashboard';
 
-// Mock dependencies
 jest.mock('@/hooks/use-users/use-users', () => ({
   useUsers: jest.fn(() => ({
     query: {

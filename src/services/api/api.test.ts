@@ -5,7 +5,6 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
-// Mock dependencies
 jest.mock('@/utils/env');
 jest.mock('@tanstack/react-query');
 jest.mock('axios');
@@ -25,10 +24,8 @@ describe('API Service', () => {
   };
 
   beforeEach(async () => {
-    // Reset all mocks
     jest.clearAllMocks();
 
-    // Mock localStorage
     Object.defineProperty(window, 'localStorage', {
       value: {
         getItem: jest.fn(),
@@ -37,7 +34,6 @@ describe('API Service', () => {
       writable: true,
     });
 
-    // Setup axios mock
     mockAxiosInstance = {
       interceptors: {
         request: {
@@ -62,7 +58,6 @@ describe('API Service', () => {
       },
     });
 
-    // Capture interceptor functions
     (mockAxiosInstance.interceptors!.request.use as jest.Mock).mockImplementation(
       (
         successFn: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig,
@@ -81,7 +76,6 @@ describe('API Service', () => {
       },
     );
 
-    // Import the module after mocking
     await import('./api');
   });
 

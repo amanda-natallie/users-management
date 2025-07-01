@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import CreateUserView from './create-user';
 
-// Mock the CreateUserForm component
 jest.mock('./create-user-form', () => ({
   __esModule: true,
   default: () => <div data-testid="create-user-form">Create User Form</div>,

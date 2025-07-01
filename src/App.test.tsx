@@ -1,7 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import App from './App';
 
-// Mock dependencies
 jest.mock('@/hooks/use-users/use-users', () => ({
   useUsers: jest.fn(() => ({
     query: {

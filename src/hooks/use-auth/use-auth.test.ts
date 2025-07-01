@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react';
 import { useNavigate } from 'react-router';
 import { useLogin, useLogout, useRegister } from './use-auth';
 
-// Mock dependencies
 jest.mock('@/services', () => ({
   AuthService: {
     register: jest.fn(),

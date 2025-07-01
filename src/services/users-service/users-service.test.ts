@@ -2,7 +2,6 @@ import api from '@/services/api/api';
 import { AxiosError } from 'axios';
 import UsersService from './users-service';
 
-// Mock the API module
 jest.mock('@/services/api/api', () => ({
   get: jest.fn(),
   post: jest.fn(),

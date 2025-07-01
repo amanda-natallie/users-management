@@ -21,7 +21,6 @@ jest.mock('@/schemas', () => ({
   signUpSchema: {},
 }));
 
-// Mock the components
 jest.mock('@/components/layout', () => ({
   AuthLayout: ({
     children,
@@ -244,16 +243,13 @@ describe('SignUpForm', () => {
       const passwordInput = screen.getByTestId('input-password');
       const toggleButton = screen.getByTestId('toggle-password-password');
 
-      // Initially password should be hidden
       expect(passwordInput).toHaveAttribute('type', 'password');
       expect(toggleButton).toHaveTextContent('Show');
 
-      // Click to show password
       fireEvent.click(toggleButton);
       expect(passwordInput).toHaveAttribute('type', 'text');
       expect(toggleButton).toHaveTextContent('Hide');
 
-      // Click to hide password again
       fireEvent.click(toggleButton);
       expect(passwordInput).toHaveAttribute('type', 'password');
       expect(toggleButton).toHaveTextContent('Show');
@@ -265,16 +261,13 @@ describe('SignUpForm', () => {
       const confirmPasswordInput = screen.getByTestId('input-confirmPassword');
       const toggleButton = screen.getByTestId('toggle-password-confirmPassword');
 
-      // Initially confirm password should be hidden
       expect(confirmPasswordInput).toHaveAttribute('type', 'password');
       expect(toggleButton).toHaveTextContent('Show');
 
-      // Click to show confirm password
       fireEvent.click(toggleButton);
       expect(confirmPasswordInput).toHaveAttribute('type', 'text');
       expect(toggleButton).toHaveTextContent('Hide');
 
-      // Click to hide confirm password again
       fireEvent.click(toggleButton);
       expect(confirmPasswordInput).toHaveAttribute('type', 'password');
       expect(toggleButton).toHaveTextContent('Show');
@@ -288,17 +281,14 @@ describe('SignUpForm', () => {
       const passwordToggle = screen.getByTestId('toggle-password-password');
       const confirmPasswordToggle = screen.getByTestId('toggle-password-confirmPassword');
 
-      // Toggle password visibility
       fireEvent.click(passwordToggle);
       expect(passwordInput).toHaveAttribute('type', 'text');
       expect(confirmPasswordInput).toHaveAttribute('type', 'password');
 
-      // Toggle confirm password visibility
       fireEvent.click(confirmPasswordToggle);
       expect(passwordInput).toHaveAttribute('type', 'text');
       expect(confirmPasswordInput).toHaveAttribute('type', 'text');
 
-      // Toggle password back to hidden
       fireEvent.click(passwordToggle);
       expect(passwordInput).toHaveAttribute('type', 'password');
       expect(confirmPasswordInput).toHaveAttribute('type', 'text');
@@ -312,14 +302,11 @@ describe('SignUpForm', () => {
       const passwordInput = screen.getByTestId('input-password');
       const visibilityState = screen.getByTestId('visibility-state');
 
-      // Initially password strength should be hidden
       expect(visibilityState).toHaveTextContent('hidden');
 
-      // Focus on password field
       fireEvent.focus(passwordInput);
       expect(visibilityState).toHaveTextContent('visible');
 
-      // Blur password field
       fireEvent.blur(passwordInput);
       expect(visibilityState).toHaveTextContent('hidden');
     });
@@ -330,7 +317,6 @@ describe('SignUpForm', () => {
       const passwordInput = screen.getByTestId('input-password');
       const visibilityState = screen.getByTestId('visibility-state');
 
-      // Multiple focus/blur cycles
       fireEvent.focus(passwordInput);
       expect(visibilityState).toHaveTextContent('visible');
 
@@ -578,8 +564,6 @@ describe('SignUpForm', () => {
     it('passes control object to form fields', () => {
       render(<SignUpForm onSwitchToSignIn={mockOnSwitchToSignIn} />);
 
-      // The control object should be passed to all fields
-      // This is tested indirectly through the field rendering
       expect(screen.getByTestId('field-email')).toBeInTheDocument();
       expect(screen.getByTestId('field-password')).toBeInTheDocument();
       expect(screen.getByTestId('field-confirmPassword')).toBeInTheDocument();
@@ -602,7 +586,6 @@ describe('SignUpForm', () => {
 
       render(<SignUpForm onSwitchToSignIn={mockOnSwitchToSignIn} />);
 
-      // Should not display error elements when errors are undefined
       expect(screen.queryByTestId('error-email')).not.toBeInTheDocument();
       expect(screen.queryByTestId('error-password')).not.toBeInTheDocument();
       expect(screen.queryByTestId('error-confirmPassword')).not.toBeInTheDocument();
@@ -641,15 +624,12 @@ describe('SignUpForm', () => {
       const confirmPasswordInput = screen.getByTestId('input-confirmPassword');
       const visibilityState = screen.getByTestId('visibility-state');
 
-      // Focus on password should show strength
       fireEvent.focus(passwordInput);
       expect(visibilityState).toHaveTextContent('visible');
 
-      // Focus on confirm password should not affect password strength visibility
       fireEvent.focus(confirmPasswordInput);
       expect(visibilityState).toHaveTextContent('visible');
 
-      // Only blurring password should hide strength
       fireEvent.blur(passwordInput);
       expect(visibilityState).toHaveTextContent('hidden');
     });
@@ -660,16 +640,13 @@ describe('SignUpForm', () => {
       const passwordToggle = screen.getByTestId('toggle-password-password');
       const confirmPasswordToggle = screen.getByTestId('toggle-password-confirmPassword');
 
-      // Initial state
       expect(passwordToggle).toHaveTextContent('Show');
       expect(confirmPasswordToggle).toHaveTextContent('Show');
 
-      // Toggle password
       fireEvent.click(passwordToggle);
       expect(passwordToggle).toHaveTextContent('Hide');
       expect(confirmPasswordToggle).toHaveTextContent('Show');
 
-      // Toggle confirm password
       fireEvent.click(confirmPasswordToggle);
       expect(passwordToggle).toHaveTextContent('Hide');
       expect(confirmPasswordToggle).toHaveTextContent('Hide');

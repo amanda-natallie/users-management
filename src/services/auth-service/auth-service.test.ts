@@ -2,12 +2,10 @@ import api from '@/services/api/api';
 import { AxiosError } from 'axios';
 import AuthService from './auth-service';
 
-// Mock the API module
 jest.mock('@/services/api/api', () => ({
   post: jest.fn(),
 }));
 
-// Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),

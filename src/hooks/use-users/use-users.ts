@@ -17,7 +17,6 @@ export const userKeys = {
   optimistic: () => [...userKeys.all, 'optimistic'] as const,
 };
 
-// Estado local para simular mutações
 interface OptimisticState {
   createdUsers: UserItem[];
   updatedUsers: Map<number, UserItem>;
@@ -32,7 +31,6 @@ export const useUsers = () => {
     setPage(page);
   };
 
-  // Reset do estado otimista quando a página é recarregada
   useEffect(() => {
     const handleBeforeUnload = () => {
       queryClient.setQueryData(userKeys.optimistic(), {
@@ -49,7 +47,6 @@ export const useUsers = () => {
     };
   }, [queryClient]);
 
-  // Função para obter o estado otimista atual
   const getOptimisticState = useCallback((): OptimisticState => {
     return (
       queryClient.getQueryData(userKeys.optimistic()) || {
@@ -60,7 +57,6 @@ export const useUsers = () => {
     );
   }, [queryClient]);
 
-  // Função para atualizar o estado otimista
   const updateOptimisticState = useCallback(
     (updater: (state: OptimisticState) => OptimisticState) => {
       const currentState = getOptimisticState();
@@ -70,7 +66,6 @@ export const useUsers = () => {
     [queryClient, getOptimisticState],
   );
 
-  // Função para aplicar transformações otimistas aos dados da API
   const applyOptimisticTransformations = useCallback(
     (apiData: GetUsersResponse): GetUsersResponse => {
       const optimisticState = getOptimisticState();
@@ -79,7 +74,6 @@ export const useUsers = () => {
 
       const itemsPerPage = 6;
 
-      // 1. Preparar todos os usuários criados (com atualizações aplicadas)
       const createdUsers = optimisticState.createdUsers
         .map(user => {
           const updatedUser = optimisticState.updatedUsers.get(user.id);
@@ -87,7 +81,6 @@ export const useUsers = () => {
         })
         .filter(user => !optimisticState.deletedUserIds.has(user.id));
 
-      // 3. Aplicar atualizações e remover deletados de todos os usuários da API
       const apiUsers = allApiUsers
         .map(user => {
           const updatedUser = optimisticState.updatedUsers.get(user.id);
@@ -95,18 +88,15 @@ export const useUsers = () => {
         })
         .filter(user => !optimisticState.deletedUserIds.has(user.id));
 
-      // 4. Combinar todos os usuários (criados primeiro, depois da API)
       const allUsers = [...createdUsers, ...apiUsers];
 
-      // 5. Calcular quais itens devem aparecer na página atual
       const startIndex = (apiData.page - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
       const pageUsers = allUsers.slice(startIndex, endIndex);
 
-      // 6. Calcular total e páginas
       const totalCreated = createdUsers.length;
       const totalDeleted = optimisticState.deletedUserIds.size;
-      const newTotal = Math.max(0, 12 + totalCreated - totalDeleted); // 12 é o total original da API
+      const newTotal = Math.max(0, 12 + totalCreated - totalDeleted);
       const newTotalPages = Math.ceil(newTotal / itemsPerPage);
 
       return {
@@ -148,16 +138,14 @@ export const useCreateUser = () => {
       return promise;
     },
     onSuccess: data => {
-      // Criar um novo usuário com ID único baseado no timestamp
       const newUser: UserItem = {
-        id: Date.now(), // ID temporário único
+        id: Date.now(),
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
         avatar: `https://reqres.in/img/faces/${Math.floor(Math.random() * 12) + 1}-image.jpg`,
       };
 
-      // Adicionar ao estado otimista
       queryClient.setQueryData(userKeys.optimistic(), (oldState: OptimisticState | undefined) => {
         const currentState = oldState || {
           createdUsers: [],
@@ -171,7 +159,6 @@ export const useCreateUser = () => {
         };
       });
 
-      // Invalidar queries para refazer o fetch com as transformações
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     },
   });
@@ -194,7 +181,6 @@ export const useUpdateUser = () => {
       return promise;
     },
     onSuccess: (data, variables) => {
-      // Atualizar o usuário no estado otimista
       const updatedUser: UserItem = {
         id: variables.id,
         first_name: data.first_name,
@@ -219,7 +205,6 @@ export const useUpdateUser = () => {
         };
       });
 
-      // Invalidar queries para refazer o fetch com as transformações
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     },
   });
@@ -242,7 +227,6 @@ export const useDeleteUser = () => {
       return promise;
     },
     onSuccess: (_, id) => {
-      // Adicionar o ID à lista de usuários deletados
       queryClient.setQueryData(userKeys.optimistic(), (oldState: OptimisticState | undefined) => {
         const currentState = oldState || {
           createdUsers: [],
@@ -259,13 +243,11 @@ export const useDeleteUser = () => {
         };
       });
 
-      // Invalidar queries para refazer o fetch com as transformações
       queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     },
   });
 };
 
-// Hook para resetar o estado otimista (útil para testes ou reset manual)
 export const useResetOptimisticState = () => {
   const queryClient = useQueryClient();
 

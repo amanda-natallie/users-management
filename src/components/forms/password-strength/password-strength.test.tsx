@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import PasswordStrength from './password-strength';
 
-// Mock the cn utility function
 jest.mock('@/utils', () => ({
   cn: jest.fn((...classes) => classes.filter(Boolean).join(' ')),
 }));
@@ -35,7 +34,6 @@ describe('PasswordStrength', () => {
       expect(screen.getByText('One number')).toBeInTheDocument();
       expect(screen.getByText('One special character')).toBeInTheDocument();
 
-      // All should show X icons (failed requirements)
       expect(screen.getAllByTestId('x-icon')).toHaveLength(5);
       expect(screen.queryAllByTestId('check-icon')).toHaveLength(0);
     });
@@ -46,36 +44,36 @@ describe('PasswordStrength', () => {
       const checkIcons = screen.getAllByTestId('check-icon');
       const xIcons = screen.getAllByTestId('x-icon');
 
-      expect(checkIcons).toHaveLength(2); // lenght and number
-      expect(xIcons).toHaveLength(3); // Other 4 requirements not met
+      expect(checkIcons).toHaveLength(2);
+      expect(xIcons).toHaveLength(3);
     });
 
     it('should show check icon for uppercase requirement', () => {
       render(<PasswordStrength password="A" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(1); // Only uppercase requirement met
+      expect(checkIcons).toHaveLength(1);
     });
 
     it('should show check icon for lowercase requirement', () => {
       render(<PasswordStrength password="a" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(1); // Only lowercase requirement met
+      expect(checkIcons).toHaveLength(1);
     });
 
     it('should show check icon for number requirement', () => {
       render(<PasswordStrength password="1" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(1); // Only number requirement met
+      expect(checkIcons).toHaveLength(1);
     });
 
     it('should show check icon for special character requirement', () => {
       render(<PasswordStrength password="!" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(1); // Only special character requirement met
+      expect(checkIcons).toHaveLength(1);
     });
 
     it('should show all check icons for strong password', () => {
@@ -84,8 +82,8 @@ describe('PasswordStrength', () => {
       const checkIcons = screen.getAllByTestId('check-icon');
       const xIcons = screen.queryAllByTestId('x-icon');
 
-      expect(checkIcons).toHaveLength(5); // All requirements met
-      expect(xIcons).toHaveLength(0); // No failed requirements
+      expect(checkIcons).toHaveLength(5);
+      expect(xIcons).toHaveLength(0);
     });
 
     it('should show mixed icons for partially strong password', () => {
@@ -94,8 +92,8 @@ describe('PasswordStrength', () => {
       const checkIcons = screen.queryAllByTestId('check-icon');
       const xIcons = screen.getAllByTestId('x-icon');
 
-      expect(checkIcons).toHaveLength(3); // Length, uppercase and lowercase met
-      expect(xIcons).toHaveLength(2); // Number and special character not met
+      expect(checkIcons).toHaveLength(3);
+      expect(xIcons).toHaveLength(2);
     });
   });
 
@@ -188,14 +186,14 @@ describe('PasswordStrength', () => {
       render(<PasswordStrength password="!@#$%^&*()" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(2); // Length and special character requirements
+      expect(checkIcons).toHaveLength(2);
     });
 
     it('should handle passwords with numbers and special characters', () => {
       render(<PasswordStrength password="123!@#" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(2); // Number and special character requirements
+      expect(checkIcons).toHaveLength(2);
     });
 
     it('should handle very long passwords', () => {
@@ -203,14 +201,14 @@ describe('PasswordStrength', () => {
       render(<PasswordStrength password={longPassword} isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(5); // All requirements should be met
+      expect(checkIcons).toHaveLength(5);
     });
 
     it('should handle passwords with unicode characters', () => {
       render(<PasswordStrength password="Pässwörd123!" isVisible={true} />);
 
       const checkIcons = screen.getAllByTestId('check-icon');
-      expect(checkIcons).toHaveLength(5); // All requirements should be met
+      expect(checkIcons).toHaveLength(5);
     });
   });
 

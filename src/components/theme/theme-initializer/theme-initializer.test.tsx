@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import ThemeInitializer from './theme-initializer';
 
-// Mock the useThemeStore hook
 const mockInitializeTheme = jest.fn();
 
 jest.mock('@/stores', () => ({
@@ -34,7 +33,6 @@ describe('ThemeInitializer', () => {
     it('should call initializeTheme when component mounts', () => {
       render(<ThemeInitializer />);
 
-      // The useEffect should have been called during render
       expect(mockInitializeTheme).toHaveBeenCalledTimes(1);
       expect(mockInitializeTheme).toHaveBeenCalledWith();
     });
@@ -47,7 +45,6 @@ describe('ThemeInitializer', () => {
       expect(useThemeStore).toHaveBeenCalledTimes(1);
       expect(useThemeStore).toHaveBeenCalledWith(expect.any(Function));
 
-      // Verify the selector function works correctly
       const selector = useThemeStore.mock.calls[0][0];
       const mockState = { initializeTheme: mockInitializeTheme };
       const result = selector(mockState);
@@ -77,14 +74,11 @@ describe('ThemeInitializer', () => {
     it('should handle re-renders correctly', () => {
       render(<ThemeInitializer />);
 
-      // Clear the mock to track new calls
       mockInitializeTheme.mockClear();
 
-      // Re-render the component
       const { rerender } = render(<ThemeInitializer />);
       rerender(<ThemeInitializer />);
 
-      // The useEffect should run again on re-render
       expect(mockInitializeTheme).toHaveBeenCalledTimes(1);
     });
   });
@@ -95,7 +89,6 @@ describe('ThemeInitializer', () => {
         throw new Error('Theme initialization failed');
       });
 
-      // The error should be thrown when useEffect runs during render
       expect(() => render(<ThemeInitializer />)).toThrow('Theme initialization failed');
     });
   });
@@ -104,20 +97,17 @@ describe('ThemeInitializer', () => {
     it('should handle null initializeTheme function', () => {
       const { useThemeStore } = jest.requireMock('@/stores');
 
-      // Mock useThemeStore to return null
       useThemeStore.mockImplementation((selector: (state: { initializeTheme: null }) => null) => {
         const state = { initializeTheme: null };
         return selector(state);
       });
 
-      // This will throw when useEffect tries to call null as a function
       expect(() => render(<ThemeInitializer />)).toThrow('initializeTheme is not a function');
     });
 
     it('should handle undefined initializeTheme function', () => {
       const { useThemeStore } = jest.requireMock('@/stores');
 
-      // Mock useThemeStore to return undefined
       useThemeStore.mockImplementation(
         (selector: (state: { initializeTheme: undefined }) => undefined) => {
           const state = { initializeTheme: undefined };
@@ -125,7 +115,6 @@ describe('ThemeInitializer', () => {
         },
       );
 
-      // This will throw when useEffect tries to call undefined as a function
       expect(() => render(<ThemeInitializer />)).toThrow('initializeTheme is not a function');
     });
   });

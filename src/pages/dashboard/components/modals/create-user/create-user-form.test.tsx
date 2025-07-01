@@ -17,7 +17,6 @@ interface MockComponentProps {
   loadingText?: string;
 }
 
-// Mock dependencies
 jest.mock('@/components/forms', () => ({
   ControlledFormField: ({ name, label, placeholder, error }: MockComponentProps) => (
     <div data-testid={`field-${name}`}>

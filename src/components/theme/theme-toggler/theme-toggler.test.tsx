@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import ThemeToggle from './theme-toggler';
 
-// Define proper types for the mocked components
 interface ButtonProps {
   children: React.ReactNode;
   onClick: () => void;
@@ -18,7 +17,6 @@ interface IconProps {
   [key: string]: unknown;
 }
 
-// Mock the dependencies
 jest.mock('@/components/ui/button', () => ({
   Button: ({ children, onClick, className, variant, size, ...props }: ButtonProps) => (
     <button
@@ -38,7 +36,6 @@ jest.mock('@/stores', () => ({
   useThemeStore: jest.fn(),
 }));
 
-// Mock lucide-react icons
 jest.mock('lucide-react', () => ({
   Sun: ({ className, ...props }: IconProps) => (
     <svg data-testid="sun-icon" className={className} {...props}>
@@ -52,7 +49,6 @@ jest.mock('lucide-react', () => ({
   ),
 }));
 
-// Import mocked functions using ES6 imports
 import { useThemeStore } from '@/stores';
 
 const mockUseThemeStore = useThemeStore as jest.MockedFunction<typeof useThemeStore>;

@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { useNavigate } from 'react-router';
 import AuthGuard from './auth-guard';
 
-// Mock dependencies
 jest.mock('react-router', () => ({
   useNavigate: jest.fn(),
 }));
@@ -29,7 +28,6 @@ describe('AuthGuard', () => {
     jest.clearAllMocks();
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
 
-    // Mock the auth utils module
     const authModule = jest.requireMock('@/utils/auth');
     authModule.authUtils.isAuthenticated = mockAuthUtils.isAuthenticated;
   });
@@ -136,7 +134,6 @@ describe('AuthGuard', () => {
 
       const { rerender } = render(<AuthGuard>Content</AuthGuard>);
 
-      // Re-render with same authentication state
       rerender(<AuthGuard>Content</AuthGuard>);
 
       expect(mockNavigate).toHaveBeenCalledTimes(1);
@@ -163,13 +160,11 @@ describe('AuthGuard', () => {
 
   describe('Authentication State Changes', () => {
     it('should handle authentication state change from false to true', () => {
-      // Initially not authenticated
       mockAuthUtils.isAuthenticated.mockReturnValue(false);
       const { rerender } = render(<AuthGuard>Content</AuthGuard>);
 
       expect(screen.getByTestId('fullscreen-loader')).toBeInTheDocument();
 
-      // Now authenticated
       mockAuthUtils.isAuthenticated.mockReturnValue(true);
       rerender(<AuthGuard>Content</AuthGuard>);
 
@@ -178,13 +173,11 @@ describe('AuthGuard', () => {
     });
 
     it('should handle authentication state change from true to false', () => {
-      // Initially authenticated
       mockAuthUtils.isAuthenticated.mockReturnValue(true);
       const { rerender } = render(<AuthGuard>Content</AuthGuard>);
 
       expect(screen.getByTestId('auth-guard')).toBeInTheDocument();
 
-      // Now not authenticated
       mockAuthUtils.isAuthenticated.mockReturnValue(false);
       rerender(<AuthGuard>Content</AuthGuard>);
 

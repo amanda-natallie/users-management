@@ -67,11 +67,8 @@ describe('FormField', () => {
         onTogglePassword={jest.fn()}
       />,
     );
-
-    // Check for Eye icon (password hidden)
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    // The Eye icon should be present when showPassword is false
   });
 
   it('shows eye-off icon when password is visible', () => {
@@ -85,10 +82,8 @@ describe('FormField', () => {
       />,
     );
 
-    // Check for EyeOff icon (password visible)
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    // The EyeOff icon should be present when showPassword is true
   });
 
   it('calls onTogglePassword when toggle button is clicked', () => {
@@ -220,7 +215,6 @@ describe('FormField', () => {
   it('renders with animation classes', () => {
     render(<FormField {...defaultProps} />);
 
-    // The animate-slide-in class is on the outer div container
     const container = screen.getByLabelText('Test Label').closest('div')?.parentElement;
     expect(container).toHaveClass('animate-slide-in');
   });
@@ -287,14 +281,12 @@ describe('FormField', () => {
   });
 
   it('handles conditional rendering of password toggle', () => {
-    // Test with showPasswordToggle false
     const { rerender } = render(
       <FormField {...defaultProps} type="password" showPasswordToggle={false} />,
     );
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
 
-    // Test with showPasswordToggle true
     rerender(
       <FormField
         {...defaultProps}
@@ -309,12 +301,10 @@ describe('FormField', () => {
   });
 
   it('handles conditional error rendering', () => {
-    // Test without error
     const { rerender } = render(<FormField {...defaultProps} />);
 
     expect(screen.queryByText('Error message')).not.toBeInTheDocument();
 
-    // Test with error
     rerender(<FormField {...defaultProps} error="Error message" />);
 
     expect(screen.getByText('Error message')).toBeInTheDocument();
