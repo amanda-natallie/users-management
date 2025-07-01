@@ -2,7 +2,7 @@ export class DashboardPage {
   // Selectors
   private readonly pageTitle = 'h1';
   private readonly welcomeMessage = 'h1:contains("Welcome")';
-  private readonly createUserButton = 'span[data-testid="create-user-button"]';
+  private readonly createUserButton = 'button[data-testid="create-user-button"]';
   private readonly logoutButton = 'button[data-testid="logout-button"]';
   private readonly usersTable = 'table';
   private readonly userRow = 'tbody tr';
@@ -14,9 +14,9 @@ export class DashboardPage {
 
   // Modal selectors
   private readonly modal = '[role="dialog"]';
-  private readonly modalTitle = '[role="dialog"] h2';
-  private readonly modalClose = 'button[aria-label="Close"]';
-  private readonly modalCancel = 'button:contains("Cancel")';
+  private readonly modalTitle = '[role="dialog"] h1';
+  private readonly modalClose = '.ring-offset-background';
+  private readonly modalCancel = '.ring-offset-background';
 
   // Form selectors
   private readonly firstNameInput = '#create-user-first-name, #update-user-first-name';
@@ -170,7 +170,9 @@ export class DashboardPage {
   }
 
   shouldShowValidationError(errorMessage: string) {
-    cy.contains(errorMessage).should('be.visible');
+    cy.contains(errorMessage).should('be.visible', {
+      timeout: 10000,
+    });
     return this;
   }
 

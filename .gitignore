@@ -29,6 +29,7 @@ docs
 coverage
 coverage-report
 test-results
+cypress/screenshots
 
 # Environment files
 .env

@@ -10,8 +10,8 @@
     "email": "jane.smith@example.com"
   },
   "invalidUser": {
-    "first_name": "",
-    "last_name": "",
+    "first_name": " ",
+    "last_name": " ",
     "email": "invalid-email"
   },
   "longNameUser": {

@@ -26,6 +26,7 @@ const FormWrapper = ({
         className="w-full btn-purple transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] mt-4"
         disabled={!isValid || loading}
         loading={loading}
+        aria-label={submitText}
         loadingText={loadingText}
       >
         {submitText}

@@ -2,28 +2,18 @@ import { Container, MainLayout } from '@/components/layout';
 import { ThemeToggle } from '@/components/theme';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import ROUTES from '@/constants/routes';
 import { ModalType, useModalStore } from '@/stores';
-import { LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router';
 import UsersTable from './components/users-table/users-table';
+import { useNavigate } from 'react-router';
+import ROUTES from '@/constants/routes';
+import { LogOut } from 'lucide-react';
 
 const DashboardPage = () => {
   const { openModal } = useModalStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear localStorage
     localStorage.clear();
-
-    // Clear cookies
-    document.cookie.split(';').forEach(c => {
-      document.cookie = c
-        .replace(/^ +/, '')
-        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-    });
-
-    // Redirect to auth page
     navigate(ROUTES.AUTH, { replace: true });
   };
 
@@ -65,13 +55,10 @@ const DashboardPage = () => {
             onClick={() => openModal(ModalType.CREATE)}
             className="transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             size="default"
+            data-testid="create-user-button"
           >
-            <span className="hidden sm:inline" data-testid="create-user-button">
-              Create User
-            </span>
-            <span className="sm:hidden" data-testid="create-user-button">
-              Create
-            </span>
+            <span className="hidden sm:inline">Create User</span>
+            <span className="sm:hidden">Create</span>
           </Button>
         </div>
 
