@@ -264,11 +264,11 @@ nano .env.production
 ## 📚 Documentation
 
 - [Architecture Guide](./docs/ARCHITECTURE.md) - Detailed technical architecture
-- [API Documentation](./docs/API_DOCUMENTATION.md) - API endpoints and usage
-- [Testing Strategy](./docs/TESTING_STRATEGY.md) - Testing approach and guidelines
 - [Deployment Guide](./docs/DEPLOYMENT.md) - Deployment instructions
-- [Performance Guide](./docs/PERFORMANCE.md) - Performance optimizations
-- [Security Guide](./docs/SECURITY.md) - Security considerations
+- [Optimistic Updates](./docs/OPTIMISTIC_UPDATES.md) - Optimistic updates strategy for CRUD operations
+- [Routing](./docs/ROUTING.md) - Routing configuration
+- [Testing Strategy](./docs/TESTING_STRATEGY.md) - Testing approach and guidelines
+
 
 
 ## 🙏 Acknowledgments
